@@ -194,6 +194,9 @@
         }
     }
 
+    // Eksporter reinit-funksjon for SPA-navigasjon
+    window.reinitNews = init;
+
     // Sikrer at init kjører uansett om DOMContentLoaded allerede har fyrt
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

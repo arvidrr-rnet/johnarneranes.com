@@ -915,6 +915,53 @@ a:hover {
 }
 
 /* ============================================
+   POP-OUT BUTTON & STATE
+   ============================================ */
+.audio-player__btn--popout {
+    opacity: 0.6;
+    transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.audio-player__btn--popout:hover {
+    opacity: 1;
+    color: var(--color-accent-primary);
+}
+
+.audio-player--popout-active .audio-player__container {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.audio-player--popout-active::after {
+    content: 'Spiller i pop-out vindu';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-accent-primary);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ============================================
+   SPA CONTENT TRANSITIONS
+   ============================================ */
+#spa-content {
+    transition: opacity 0.15s ease;
+}
+
+.spa-content--leaving {
+    opacity: 0;
+}
+
+.spa-content--entering {
+    opacity: 0;
+}
+
+/* ============================================
    PROJECT CARDS / GRID
    ============================================ */
 .projects-grid {

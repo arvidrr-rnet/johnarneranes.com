@@ -58,6 +58,9 @@ class AudioPlayer {
         this.libraryLoaded = false;
         this.volume = parseFloat(localStorage.getItem('jar_audioVolume')) || 0.8;
         this.autoResume = localStorage.getItem('jar_autoResume') !== 'false';
+        this.popOutWindow = null;
+        this.isPopOutActive = false;
+        this.channel = null;
         
         this.init();
     }
@@ -77,6 +80,9 @@ class AudioPlayer {
         
         // Vis spilleren alltid - gjør den lett tilgjengelig
         this.showPlayer();
+        
+        // Sett opp BroadcastChannel for pop-out kommunikasjon
+        this.initPopOutChannel();
     }
     
     createPlayerUI() {
@@ -140,6 +146,13 @@ class AudioPlayer {
                         <input type="range" class="audio-player__volume-slider" id="volume-slider" 
                                min="0" max="1" step="0.01" value="${this.volume}" aria-label="Volumkontroll">
                     </div>
+                    
+                    <!-- Pop-out -->
+                    <button class="audio-player__btn audio-player__btn--popout" id="popout-btn" aria-label="Pop ut spiller" title="Pop ut i eget vindu">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                        </svg>
+                    </button>
                 </div>
                 
                 <!-- Musikkbibliotek panel -->
@@ -178,6 +191,7 @@ class AudioPlayer {
         this.trackArtistEl = document.getElementById('track-artist');
         this.volumeSlider = document.getElementById('volume-slider');
         this.libraryBtn = document.getElementById('library-btn');
+        this.popOutBtn = document.getElementById('popout-btn');
         this.libraryPanel = document.getElementById('audio-library');
         this.libraryClose = document.getElementById('library-close');
         this.libraryAlbums = document.getElementById('library-albums');
@@ -205,6 +219,9 @@ class AudioPlayer {
         this.libraryBtn.addEventListener('click', () => this.toggleLibrary());
         this.libraryClose.addEventListener('click', () => this.closeLibrary());
         this.libraryBack.addEventListener('click', () => this.showAlbumList());
+        
+        // Pop-out
+        this.popOutBtn.addEventListener('click', () => this.popOutPlayer());
         
         // Audio events
         this.audio.addEventListener('timeupdate', () => this.updateProgress());
@@ -616,6 +633,109 @@ class AudioPlayer {
                 this.toggleLibrary();
                 break;
         }
+    }
+    
+    // ============================================================
+    // POP-OUT SPILLER — Åpne i eget vindu
+    // ============================================================
+    initPopOutChannel() {
+        try {
+            this.channel = new BroadcastChannel('jar-player');
+            this.channel.onmessage = (e) => this.handleChannelMessage(e);
+        } catch (err) {
+            console.warn('BroadcastChannel ikke tilgjengelig:', err);
+        }
+    }
+    
+    handleChannelMessage(event) {
+        const { type, data } = event.data;
+        
+        switch (type) {
+            case 'popout-ready':
+                // Pop-out er lastet, send nåværende tilstand
+                if (this.channel) {
+                    this.channel.postMessage({
+                        type: 'sync-state',
+                        data: {
+                            albumId: this.currentAlbum?.id,
+                            trackIndex: this.currentIndex,
+                            currentTime: this.audio.currentTime,
+                            isPlaying: this.isPlaying,
+                            volume: this.volume,
+                            playlist: this.currentPlaylist,
+                            library: MUSIC_LIBRARY
+                        }
+                    });
+                }
+                // Pause hovedspilleren
+                this.pause();
+                this.isPopOutActive = true;
+                this.playerEl.classList.add('audio-player--popout-active');
+                break;
+                
+            case 'popout-closed':
+                // Pop-out ble lukket, gjenoppta i hovedvinduet
+                this.isPopOutActive = false;
+                this.popOutWindow = null;
+                this.playerEl.classList.remove('audio-player--popout-active');
+                
+                // Gjenopprett tilstand fra pop-out
+                if (data) {
+                    if (data.albumId) {
+                        const album = MUSIC_LIBRARY.albums.find(a => a.id === data.albumId);
+                        if (album) {
+                            this.currentAlbum = album;
+                            this.currentPlaylist = data.playlist || [];
+                            this.currentIndex = data.trackIndex || 0;
+                            
+                            if (this.currentPlaylist[this.currentIndex]) {
+                                const seekTime = data.currentTime || 0;
+                                const shouldPlay = data.isPlaying;
+                                
+                                this.loadTrack(this.currentPlaylist[this.currentIndex]);
+                                
+                                // Vent på at metadata lastes før vi setter currentTime
+                                const onMeta = () => {
+                                    this.audio.removeEventListener('loadedmetadata', onMeta);
+                                    this.audio.currentTime = seekTime;
+                                    if (shouldPlay) {
+                                        this.play();
+                                    }
+                                };
+                                this.audio.addEventListener('loadedmetadata', onMeta);
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+    
+    popOutPlayer() {
+        // Lagre tilstand før åpning
+        this.saveState();
+        
+        // Åpne pop-out vindu
+        const width = 380;
+        const height = 500;
+        const left = window.screen.width - width - 50;
+        const top = 50;
+        
+        this.popOutWindow = window.open(
+            'player.html',
+            'jar-popout',
+            `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=no`
+        );
+        
+        if (!this.popOutWindow) {
+            console.warn('Kunne ikke åpne pop-out vindu (blokkert av nettleseren?)');
+            return;
+        }
+        
+        // Pause hovedspilleren
+        this.pause();
+        this.isPopOutActive = true;
+        this.playerEl.classList.add('audio-player--popout-active');
     }
 }
 
