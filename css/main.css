@@ -288,6 +288,25 @@ a:hover {
     padding: var(--space-sm);
 }
 
+/* Back Navigation (undersider) */
+.nav-back {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-xs) var(--space-lg) 0;
+}
+
+.nav-back__link {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    letter-spacing: 0.02em;
+}
+
+.nav-back__link:hover {
+    color: var(--color-accent-primary);
+}
+
 /* ============================================
    HERO SECTION
    ============================================ */
