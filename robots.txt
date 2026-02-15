@@ -1,0 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://johnarneranes.com/sitemap.xml
+
+# Disallow admin/internal paths
+Disallow: /js/
+Disallow: /css/
+
+# Allow audio files for indexing
+Allow: /audio/

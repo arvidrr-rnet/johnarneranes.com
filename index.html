@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Arne Rånes — Eksperimentell Gitarist</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- SEO Meta -->
+    <meta name="description" content="John Arne Rånes er en eksperimentell gitarist fra Norge, basert i København. Improvisasjon, noise, elektronikk og Gitar Ordinarium.">
+    <meta name="keywords" content="John Arne Rånes, eksperimentell musikk, improvisasjon, jazz, noise, København, Statoil, Gitar Ordinarium">
+    <meta name="author" content="John Arne Rånes">
+    
+    <!-- Favicons -->
+    <link rel="icon" href="images/icon/icon144.png" type="image/png">
+    <link rel="apple-touch-icon" href="images/icon/icon144.png">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://johnarneranes.com/">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://johnarneranes.com/">
+    <meta property="og:title" content="John Arne Rånes — Eksperimentell Gitarist">
+    <meta property="og:description" content="Eksperimentell gitarist fra Norge. Improvisasjon, noise og elektronikk.">
+    <meta property="og:image" content="https://johnarneranes.com/images/jar4.jpg">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="John Arne Rånes — Eksperimentell Gitarist">
+    <meta name="twitter:description" content="Eksperimentell gitarist fra Norge.">
+    <meta name="twitter:image" content="https://johnarneranes.com/images/jar4.jpg">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Hopp til hovedinnhold</a>
+    
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="nav" role="navigation" aria-label="Hovednavigasjon">
+            <a href="index.html" class="nav__logo">JAR</a>
+            
+            <ul class="nav__links">
+                <li><a href="#about" class="nav__link">Om</a></li>
+                <li><a href="#projects" class="nav__link">Prosjekter</a></li>
+                <li><a href="#gear" class="nav__link">Utstyr</a></li>
+                <li><a href="timeline.html" class="nav__link">Tidslinje</a></li>
+                <li><a href="#contact" class="nav__link nav__cta">Kontakt</a></li>
+            </ul>
+            
+            <button class="nav__toggle" aria-label="Åpne meny" aria-expanded="false">☰</button>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="top">
+        <div class="hero__background">
+            <img src="images/jar4.jpg" alt="" aria-hidden="true">
+        </div>
+        <div class="hero__content">
+            <p class="hero__subtitle">Eksperimentell gitarist</p>
+            <h1 class="hero__title">
+                John Arne Rånes
+                <span>Improvisasjon · Noise · Elektronikk</span>
+            </h1>
+            <p class="hero__description">
+                Fra Norge, nå basert i København. Utforsker grensene mellom musikk og lyd 
+                gjennom Gitar Ordinarium og eksperimentelle lydlandskap.
+            </p>
+            <div class="hero__actions">
+                <button onclick="window.audioPlayer && window.audioPlayer.toggleLibrary()" class="btn btn--primary btn--play-hero">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Lytt nå
+                </button>
+                <a href="#projects" class="btn btn--secondary">Utforsk prosjekter</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main id="main-content">
+        
+        <!-- About Section -->
+        <section class="section section--dark" id="about">
+            <div class="about reveal">
+                <div class="about__image">
+                    <img src="images/jar4.jpg" alt="John Arne Rånes med gitar" loading="lazy">
+                </div>
+                <div class="about__content">
+                    <span class="section__label">Om kunstneren</span>
+                    <h2 class="about__title">En reise gjennom lyd</h2>
+                    <p class="about__text">
+                        John Arne Rånes er en eksperimentell gitarist fra Norge, nå bosatt i København. 
+                        Med fokus på improvisasjon, noise og elektronikk utforsker han grensene mellom 
+                        musikk og lyd.
+                    </p>
+                    <p class="about__text">
+                        Han er kjent for sitt unike instrument <strong>Gitar Ordinarium</strong> — 
+                        en spesialbygd gitar med 6 sustainere, laget av gitarmaker 
+                        <a href="https://www.jelinstruments.com/">Jens Erik Larsen</a>.
+                    </p>
+                    <p class="about__text">
+                        John Arne er aktiv i flere prosjekter inkludert <em>Statoil</em>, 
+                        <em>Ymse Impro</em>, <em>Anorektum</em>, og diverse soloverk.
+                    </p>
+                    
+                    <div class="about__stats">
+                        <div class="about__stat">
+                            <span class="about__stat-value">6+</span>
+                            <span class="about__stat-label">Aktive prosjekter</span>
+                        </div>
+                        <div class="about__stat">
+                            <span class="about__stat-value">15+</span>
+                            <span class="about__stat-label">Utgivelser</span>
+                        </div>
+                        <div class="about__stat">
+                            <span class="about__stat-value">CPH</span>
+                            <span class="about__stat-label">Basert i</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section class="section" id="projects">
+            <div class="container">
+                <div class="section__header reveal">
+                    <span class="section__label">Musikk</span>
+                    <h2 class="section__title">Prosjekter</h2>
+                    <p class="section__description">
+                        Utforsk de ulike musikalske prosjektene og samarbeidene
+                    </p>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Statoil -->
+                    <article class="project-card reveal">
+                        <a href="https://statiskoljemusikk.net/" class="project-card__image">
+                            <img src="images/statoil logo.jpg" alt="Statoil band" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Besøk →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Band</span>
+                            <h3 class="project-card__title">Statoil</h3>
+                            <p class="project-card__description">Static-oil-core. SHAPE+ 24/25 artist.</p>
+                            <a href="https://statiskoljemusikk.net/" class="project-card__link">
+                                Besøk nettside →
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- Solo -->
+                    <article class="project-card reveal">
+                        <a href="solo.html" class="project-card__image">
+                            <img src="images/solo_logo2.jpg" alt="JAR Solo" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Utforsk →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Solo</span>
+                            <h3 class="project-card__title">JAR</h3>
+                            <p class="project-card__description">Solo gitar, synthgitar og effekter.</p>
+                            <a href="solo.html" class="project-card__link">
+                                Hør utgivelser →
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- subtoner -->
+                    <article class="project-card reveal">
+                        <a href="subtoner.html" class="project-card__image">
+                            <img src="images/subtoner.jpg" alt="subtoner" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Lytt →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Prosjekt</span>
+                            <h3 class="project-card__title">subtoner</h3>
+                            <p class="project-card__description">Dype toner skapt av forvrengning og Gitar Ordinarium.</p>
+                            <a href="subtoner.html" class="project-card__link">
+                                Hør utgivelser →
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- IDM -->
+                    <article class="project-card reveal">
+                        <a href="idm.html" class="project-card__image">
+                            <img src="images/Album/idm/IDM.jpg" alt="Irrational Dance Music" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Dans →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Album</span>
+                            <h3 class="project-card__title">Irrational Dance Music</h3>
+                            <p class="project-card__description">Dansemusikk med irrasjonale taktarter.</p>
+                            <a href="idm.html" class="project-card__link">
+                                Hør albumet →
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- Ymse Impro -->
+                    <article class="project-card reveal">
+                        <a href="https://ymseimpro.org/" class="project-card__image">
+                            <img src="images/ymseimpro logo1.png" alt="Ymse Impro" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Besøk →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Kollektiv</span>
+                            <h3 class="project-card__title">Ymse Impro</h3>
+                            <p class="project-card__description">Fri improvisasjon som aktivitet, ikke estetikk.</p>
+                            <a href="https://ymseimpro.org/" class="project-card__link">
+                                Besøk nettside →
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- Anorektum -->
+                    <article class="project-card reveal">
+                        <a href="https://anorektum.com/" class="project-card__image">
+                            <img src="images/Anorektum.PNG" alt="Anorektum" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Besøk →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Band</span>
+                            <h3 class="project-card__title">Anorektum</h3>
+                            <p class="project-card__description">Horn-core.</p>
+                            <a href="https://anorektum.com/" class="project-card__link">
+                                Besøk nettside →
+                            </a>
+                        </div>
+                    </article>
+                    
+                    <!-- Archive -->
+                    <article class="project-card reveal">
+                        <a href="archive.html" class="project-card__image">
+                            <img src="images/arcive.jpg" alt="Arkiv" loading="lazy">
+                            <div class="project-card__overlay">
+                                <span class="btn btn--ghost">Utforsk →</span>
+                            </div>
+                        </a>
+                        <div class="project-card__content">
+                            <span class="project-card__category">Samling</span>
+                            <h3 class="project-card__title">Arkiv</h3>
+                            <p class="project-card__description">Andre utgivelser og samarbeid.</p>
+                            <a href="archive.html" class="project-card__link">
+                                Se arkivet →
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Gear Section -->
+        <section class="section section--dark" id="gear">
+            <div class="container">
+                <div class="section__header reveal">
+                    <span class="section__label">Instrumenter</span>
+                    <h2 class="section__title">Utstyr</h2>
+                    <p class="section__description">
+                        Gitarer og verktøy brukt til å skape lydene
+                    </p>
+                </div>
+                
+                <div class="gear-grid">
+                    <!-- Gitar Ordinarium -->
+                    <article class="gear-card reveal">
+                        <div class="gear-card__image">
+                            <img src="images/gear/Gitar Ordinarium.jpg" alt="Gitar Ordinarium" loading="lazy">
+                        </div>
+                        <div class="gear-card__content">
+                            <h3 class="gear-card__title">Gitar Ordinarium</h3>
+                            <p class="gear-card__description">
+                                Et unikt instrument bygget av gitarmaker 
+                                <a href="https://www.jelinstruments.com/">Jens Erik Larsen</a> 
+                                med 6 sustainere.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <!-- Duesenberg -->
+                    <article class="gear-card reveal">
+                        <div class="gear-card__image">
+                            <img src="images/gear/Deusenberg Starplayer TV.jpg" alt="Duesenberg Starplayer TV" loading="lazy">
+                        </div>
+                        <div class="gear-card__content">
+                            <h3 class="gear-card__title">Duesenberg Starplayer TV</h3>
+                            <p class="gear-card__description">
+                                Min andre gitar, kjøpt i 2009.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <!-- Gibson -->
+                    <article class="gear-card reveal">
+                        <div class="gear-card__image">
+                            <img src="images/gear/Gibson 70s.jpg" alt="Gibson ES-125TC" loading="lazy">
+                        </div>
+                        <div class="gear-card__content">
+                            <h3 class="gear-card__title">Gibson ES-125TC</h3>
+                            <p class="gear-card__description">
+                                Kjøpt i 2010, i New York. Fra en gang på 60-tallet.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <!-- 8-string -->
+                    <article class="gear-card reveal">
+                        <div class="gear-card__image">
+                            <img src="images/gear/8string.jpg" alt="Modifisert 8-strenger" loading="lazy">
+                        </div>
+                        <div class="gear-card__content">
+                            <h3 class="gear-card__title">Modifisert 8-strenger</h3>
+                            <p class="gear-card__description">
+                                En modifisert Harley Benton. Under utvikling.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <!-- Pedals -->
+                    <article class="gear-card reveal">
+                        <div class="gear-card__image">
+                            <img src="images/gear/pedals.jpg" alt="Pedalbrett" loading="lazy">
+                        </div>
+                        <div class="gear-card__content">
+                            <h3 class="gear-card__title">Pedalbrett</h3>
+                            <p class="gear-card__description">
+                                Pedalene som er i bruk for øyeblikket.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <!-- Amp -->
+                    <article class="gear-card reveal">
+                        <div class="gear-card__image">
+                            <img src="images/gear/Fendersupersonic.jpg" alt="Fender Supersonic" loading="lazy">
+                        </div>
+                        <div class="gear-card__content">
+                            <h3 class="gear-card__title">Fender Supersonic</h3>
+                            <p class="gear-card__description">
+                                En forsterker jeg har brukt siden 2010.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        
+        <!-- News Section -->
+        <section class="section" id="news">
+            <div class="container container--narrow">
+                <div class="section__header reveal">
+                    <span class="section__label">Oppdateringer</span>
+                    <h2 class="section__title">Nyheter</h2>
+                </div>
+                
+                <div class="news-list">
+                    <!-- Lastes dynamisk fra data/news.json via js/news.js -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="section section--elevated" id="contact">
+            <div class="container">
+                <div class="contact reveal">
+                    <span class="section__label">Booking & Samarbeid</span>
+                    <h2 class="contact__title">Ta kontakt</h2>
+                    <p class="contact__description">
+                        Tilgjengelig for konserter, samarbeid, sesjoner og bestillingsverk.
+                    </p>
+                    
+                    <a href="#" 
+                       class="contact__email" 
+                       data-email 
+                       data-email-user="johna" 
+                       data-email-domain="raanes.net"
+                       aria-label="Send e-post">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        <span>Klikk for å vise e-post</span>
+                    </a>
+                    
+                    <div class="contact__social">
+                        <a href="https://www.instagram.com/johnrnes/" class="contact__social-link" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/channel/UCz7mJP3j6dXzjdCuUvNu1PA" class="contact__social-link" aria-label="YouTube">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                            </svg>
+                        </a>
+                        <a href="https://johnarneranes.bandcamp.com/" class="contact__social-link" aria-label="Bandcamp">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M0 18.75l7.437-13.5h16.563l-7.437 13.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__container">
+            <p class="site-footer__copyright">
+                © 2026 John Arne Rånes. Alle rettigheter reservert.
+            </p>
+            <ul class="site-footer__links">
+                <li><a href="#top" class="site-footer__link">Til toppen ↑</a></li>
+                <li><a href="timeline.html" class="site-footer__link">Tidslinje</a></li>
+            </ul>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/news.js"></script>
+    <script src="js/audioplayer.js"></script>
+</body>
+</html>
