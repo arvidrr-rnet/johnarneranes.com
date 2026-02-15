@@ -12,7 +12,7 @@
       "title": "28521",
       "artist": "John Arne Rånes",
       "category": "Solo",
-      "cover": "images/Album/solo/28521.png",
+      "cover": "images/Album/solo/28521.jpg",
       "year": "2024",
       "tracks": [
         { "title": "28521", "src": "audio/solo/28521.mp3", "duration": "21:49" }
