@@ -23,7 +23,7 @@
       "title": "Passage 61",
       "artist": "John Arne Rånes",
       "category": "Solo",
-      "cover": "images/Album/solo/passage 61.jpg",
+      "cover": "images/Album/solo/passage-61.jpg",
       "year": "2024",
       "tracks": [
         { "title": "Passage 61", "src": "audio/solo/Passage 61/01 - John Arne - Passage 61.mp3", "duration": "28:05" }
@@ -34,7 +34,7 @@
       "title": "A Church of Houses",
       "artist": "John Arne Rånes",
       "category": "Solo",
-      "cover": "images/Album/solo/a church of houses.jpg",
+      "cover": "images/Album/solo/a-church-of-houses.jpg",
       "year": "2024",
       "tracks": [
         { "title": "Mouldy Basement Dreams", "src": "audio/solo/a Church of houses/01 - Mouldy Basement Dreams.mp3", "duration": "05:21" },
@@ -81,7 +81,7 @@
       "title": "Mayhem 12|12",
       "artist": "subtoner",
       "category": "Prosjekt",
-      "cover": "images/Album/subtoner/MAYHEM 1212.png",
+      "cover": "images/Album/subtoner/mayhem-1212.jpg",
       "year": "2024",
       "tracks": [
         { "title": "Mayhem 12|12", "src": "audio/subtoner/01 - subtoner - Mayhem 12-12.mp3", "duration": "12:12" }
@@ -92,7 +92,7 @@
       "title": "Elegant Music",
       "artist": "Håkon Guttormsen",
       "category": "Samarbeid",
-      "cover": "images/Album/elegant/elegant music - front - web.png",
+      "cover": "images/Album/elegant/elegant-music-front-web.jpg",
       "year": "2024",
       "tracks": [
         { "title": "Elegant Suite", "src": "audio/Haakon/01 - Haakon Guttormsen - Elegant Suite.mp3", "duration": "27:58" },
@@ -105,7 +105,7 @@
       "title": "Black Gold",
       "artist": "Statoil",
       "category": "Samarbeid",
-      "cover": "images/statoil logo.jpg",
+      "cover": "images/statoil-logo.jpg",
       "year": "2023",
       "tracks": [
         { "title": "Finding the Black Gold", "src": "audio/Statoil/Black Gold/01_Hyper-capitalistic-wet-dream_finding-the-black-gold.mp3", "duration": "08:45" },
