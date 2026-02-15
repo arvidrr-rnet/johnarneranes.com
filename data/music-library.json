@@ -50,7 +50,7 @@
       "title": "Live at Mandagsklubben",
       "artist": "John Arne Rånes",
       "category": "Solo",
-      "cover": "images/solo_logo2.png",
+      "cover": "images/solo-logo2.jpg",
       "year": "2017",
       "tracks": [
         { "title": "Mandagsklubben 05.09.17", "src": "audio/solo/01 - Mandagsklubben 05.09.17.mp3", "duration": "15:00" }
