@@ -853,31 +853,12 @@ class AudioPlayer {
     }
 }
 
-// Random Track Selector - for tilfeldig avspilling
-class RandomTrackSelector {
-    constructor() {
-        this.played = [];
-    }
-    
-    getRandomAlbum() {
-        const available = MUSIC_LIBRARY.albums.filter(a => !this.played.includes(a.id));
-        if (available.length === 0) {
-            this.played = [];
-            return MUSIC_LIBRARY.albums[Math.floor(Math.random() * MUSIC_LIBRARY.albums.length)];
-        }
-        const random = available[Math.floor(Math.random() * available.length)];
-        this.played.push(random.id);
-        return random;
-    }
-}
-
 // Initialiser spilleren når DOM er klar
 document.addEventListener('DOMContentLoaded', () => {
     window.audioPlayer = new AudioPlayer();
-    window.randomSelector = new RandomTrackSelector();
 });
 
 // Eksporter for manuell bruk
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { AudioPlayer, RandomTrackSelector, MUSIC_LIBRARY };
+    module.exports = { AudioPlayer, MUSIC_LIBRARY };
 }

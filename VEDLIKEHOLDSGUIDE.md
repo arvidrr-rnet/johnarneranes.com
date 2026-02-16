@@ -9,7 +9,7 @@ Denne nettsiden er designet for å være enkel å vedlikeholde manuelt uten beho
 ## Filstruktur
 
 ```
-johnarneranes.com-improved2/
+johnarneranes.com/
 ├── index.html              # Hovedside
 ├── solo.html               # Solo-prosjekt side
 ├── subtoner.html           # subtoner prosjekt
@@ -17,19 +17,23 @@ johnarneranes.com-improved2/
 ├── elegant.html            # Håkon Guttormsen - Elegant Music
 ├── archive.html            # Arkiv over andre utgivelser
 ├── timeline.html           # Tidslinje
+├── player.html             # Pop-out lydspiller
 ├── robots.txt              # Søkemotor-instruksjoner
 ├── sitemap.xml             # Sitemap for SEO
-├── staticwebapp.config.json # Azure Static Web App konfig
+├── version.json            # Autogenerert versjoninfo (pre-commit hook)
 │
 ├── css/
 │   └── main.css            # All styling
 │
 ├── js/
 │   ├── main.js             # Generell funksjonalitet
-│   └── audioplayer.js      # Lydspiller
+│   ├── audioplayer.js      # Lydspiller med AirPlay/MediaSession
+│   ├── spa-navigation.js   # SPA-ruter for sømløs navigasjon
+│   └── news.js             # Nyheter og tidslinje
 │
 ├── data/
-│   └── music-library.json  # ⭐ MUSIKKBIBLIOTEK - Rediger denne for nye album!
+│   ├── music-library.json  # ⭐ MUSIKKBIBLIOTEK - Rediger denne for nye album!
+│   └── news.json           # Nyheter og tidslinje-oppføringer
 │
 ├── images/                 # Alle bilder
 │   ├── icon/               # Favicons
