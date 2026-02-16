@@ -1630,6 +1630,11 @@ a:hover {
 
 /* iPad / Tablets (portrait) */
 @media (max-width: 768px) {
+    /* Skjul pop-out-knapp på mobil — window.open fungerer ikke godt */
+    .audio-player__btn--popout {
+        display: none;
+    }
+
     .nav__links {
         position: fixed;
         top: 0;
