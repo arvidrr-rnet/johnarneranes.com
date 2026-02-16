@@ -83,6 +83,12 @@ class AudioPlayer {
         
         // Sett opp BroadcastChannel for pop-out kommunikasjon
         this.initPopOutChannel();
+        
+        // Sett opp AirPlay-støtte (Safari)
+        this.initAirPlay();
+        
+        // Sett opp MediaSession API for OS-mediakontroller
+        this.initMediaSession();
     }
     
     createPlayerUI() {
@@ -146,6 +152,13 @@ class AudioPlayer {
                         <input type="range" class="audio-player__volume-slider" id="volume-slider" 
                                min="0" max="1" step="0.01" value="${this.volume}" aria-label="Volumkontroll">
                     </div>
+                    
+                    <!-- AirPlay (kun Safari) -->
+                    <button class="audio-player__btn audio-player__btn--airplay" id="airplay-btn" aria-label="AirPlay" title="Spill av via AirPlay" style="display:none">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 22h12l-6-6-6 6zM21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v-2H3V5h18v12h-4v2h4c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                        </svg>
+                    </button>
                     
                     <!-- Pop-out -->
                     <button class="audio-player__btn audio-player__btn--popout" id="popout-btn" aria-label="Pop ut spiller" title="Pop ut i eget vindu">
@@ -383,6 +396,7 @@ class AudioPlayer {
         this.trackTitleEl.textContent = track.title;
         this.trackArtistEl.textContent = track.artist;
         this.updateAllTrackHighlighting();
+        this.updateMediaSession();
     }
     
     play() {
@@ -635,6 +649,106 @@ class AudioPlayer {
         }
     }
     
+    // ============================================================
+    // AIRPLAY — Støtte for Apple AirPlay
+    // ============================================================
+    initAirPlay() {
+        const airplayBtn = document.getElementById('airplay-btn');
+        if (!airplayBtn) return;
+
+        // Sjekk om nettleseren støtter AirPlay (Safari)
+        if (window.WebKitPlaybackTargetAvailabilityEvent || this.audio.webkitShowPlaybackTargetPicker) {
+            // Lytt etter om AirPlay-enheter er tilgjengelige
+            this.audio.addEventListener('webkitplaybacktargetavailabilitychanged', (e) => {
+                airplayBtn.style.display = (e.availability === 'available') ? '' : 'none';
+            });
+
+            airplayBtn.addEventListener('click', () => {
+                if (this.audio.webkitShowPlaybackTargetPicker) {
+                    this.audio.webkitShowPlaybackTargetPicker();
+                }
+            });
+        }
+        // Remote Playback API (Chrome/Edge — Chromecast o.l., ikke Google Cast SDK)
+        else if (this.audio.remote) {
+            this.audio.remote.watchAvailability((available) => {
+                airplayBtn.style.display = available ? '' : 'none';
+            }).catch(() => {
+                // watchAvailability ikke støttet, vis knappen uansett
+                airplayBtn.style.display = '';
+            });
+
+            airplayBtn.addEventListener('click', () => {
+                this.audio.remote.prompt().catch(err => {
+                    console.warn('Remote playback feilet:', err);
+                });
+            });
+        }
+    }
+
+    // ============================================================
+    // MEDIA SESSION — OS-mediakontroller og Bluetooth-metadata
+    // ============================================================
+    initMediaSession() {
+        if (!('mediaSession' in navigator)) return;
+
+        navigator.mediaSession.setActionHandler('play', () => this.play());
+        navigator.mediaSession.setActionHandler('pause', () => this.pause());
+        navigator.mediaSession.setActionHandler('previoustrack', () => this.previousTrack());
+        navigator.mediaSession.setActionHandler('nexttrack', () => this.nextTrack());
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+            if (details.fastSeek && 'fastSeek' in this.audio) {
+                this.audio.fastSeek(details.seekTime);
+            } else {
+                this.audio.currentTime = details.seekTime;
+            }
+            this.updatePositionState();
+        });
+        navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+            this.audio.currentTime = Math.max(0, this.audio.currentTime - (details.seekOffset || 10));
+            this.updatePositionState();
+        });
+        navigator.mediaSession.setActionHandler('seekforward', (details) => {
+            this.audio.currentTime = Math.min(this.audio.duration || 0, this.audio.currentTime + (details.seekOffset || 10));
+            this.updatePositionState();
+        });
+
+        // Oppdater posisjon periodisk
+        this.audio.addEventListener('timeupdate', () => this.updatePositionState());
+    }
+
+    updateMediaSession() {
+        if (!('mediaSession' in navigator) || !this.currentTrack) return;
+
+        const coverUrl = this.currentAlbum?.cover
+            ? new URL(this.currentAlbum.cover, window.location.href).href
+            : new URL('images/icon/icon144.png', window.location.href).href;
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: this.currentTrack.title,
+            artist: this.currentTrack.artist || this.currentAlbum?.artist || 'John Arne Rånes',
+            album: this.currentAlbum?.title || '',
+            artwork: [
+                { src: coverUrl, sizes: '256x256', type: 'image/jpeg' },
+                { src: coverUrl, sizes: '512x512', type: 'image/jpeg' }
+            ]
+        });
+    }
+
+    updatePositionState() {
+        if (!('mediaSession' in navigator)) return;
+        if (!this.audio.duration || isNaN(this.audio.duration)) return;
+        try {
+            navigator.mediaSession.setPositionState({
+                duration: this.audio.duration,
+                playbackRate: this.audio.playbackRate,
+                position: this.audio.currentTime
+            });
+        } catch (e) {
+            // Ignorer feil ved ugyldig tilstand
+        }
+    }
+
     // ============================================================
     // POP-OUT SPILLER — Åpne i eget vindu
     // ============================================================

@@ -927,6 +927,16 @@ a:hover {
     color: var(--color-accent-primary);
 }
 
+.audio-player__btn--airplay {
+    opacity: 0.6;
+    transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.audio-player__btn--airplay:hover {
+    opacity: 1;
+    color: var(--color-accent-primary);
+}
+
 .audio-player--popout-active .audio-player__container {
     opacity: 0.5;
     pointer-events: none;
