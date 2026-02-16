@@ -221,7 +221,7 @@ function initVersionDisplay() {
                     year: 'numeric', month: 'short', day: 'numeric',
                     hour: '2-digit', minute: '2-digit'
                 });
-                el.textContent = `v${formatted}`;
+                el.textContent = `v: ${formatted}`;
                 if (data.commit) el.title = `Commit: ${data.commit}`;
             }
         })
