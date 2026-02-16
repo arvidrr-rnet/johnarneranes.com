@@ -1548,6 +1548,17 @@ a:hover {
     color: var(--color-accent-primary);
 }
 
+.site-footer__version {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    margin-top: var(--space-sm);
+    order: 99;
+}
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initEmailProtection();
     initSmoothScroll();
+    initVersionDisplay();
 });
 
 /**
@@ -233,3 +234,30 @@ function initLazyLoading() {
 
 // Initialize lazy loading
 document.addEventListener('DOMContentLoaded', initLazyLoading);
+
+/**
+ * Version Display
+ * Fetches version.json and shows build timestamp in footer
+ */
+function initVersionDisplay() {
+    const el = document.getElementById('site-version');
+    if (!el) return;
+
+    fetch('version.json')
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
+            if (data.version) {
+                const d = new Date(data.version);
+                const formatted = d.toLocaleDateString('nb-NO', {
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+                el.textContent = `v${formatted}`;
+                if (data.commit) el.title = `Commit: ${data.commit}`;
+            }
+        })
+        .catch(() => {}); // Silently fail if version.json missing
+}
+
+// Re-export for SPA navigation
+window.initVersionDisplay = initVersionDisplay;
