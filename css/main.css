@@ -1529,13 +1529,14 @@ a:hover {
 }
 
 .site-footer__version {
-    display: block;
-    width: 100%;
-    text-align: center;
+    display: inline-block;
     font-size: 0.7rem;
     color: var(--color-text-muted);
-    opacity: 0.5;
-    margin-top: var(--space-sm);
+    opacity: 0.6;
+    margin: 0 0 0 0;
+    padding: 0;
+    line-height: 1.2;
+    vertical-align: baseline;
     order: 99;
 }
 
