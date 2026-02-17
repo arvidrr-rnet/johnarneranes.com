@@ -1,0 +1,1440 @@
+/* ============================================
+   THEME SYSTEM — John Arne Rånes
+   3 temaer med helt ulik identitet:
+   Standard (moderne jazz-noir), Walkman (80s kassett), VHS (synthwave)
+
+   Hvert tema endrer: fonter, farger, border-radius, knapper,
+   kort-design, ikoner, spacing, og hele look & feel.
+   ============================================ */
+
+
+/* ============================================
+   THEME SWITCHER UI
+   ============================================ */
+.theme-switcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: var(--space-md);
+}
+
+.theme-switcher__btn {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.theme-switcher__btn:hover {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+}
+
+.theme-switcher__icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.theme-switcher__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: all 0.15s ease;
+    z-index: 2000;
+    box-shadow: var(--shadow-lg);
+}
+
+.theme-switcher__menu--open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.theme-switcher__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-family: var(--font-primary);
+    font-size: var(--text-sm);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.theme-switcher__option:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text-primary);
+}
+
+.theme-switcher__option--active {
+    color: var(--color-accent-primary);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.theme-switcher__option-icon {
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+}
+
+.theme-switcher__option-label {
+    flex: 1;
+}
+
+.theme-switcher__option-sub {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    display: block;
+    margin-top: 1px;
+}
+
+.theme-switcher__option-check {
+    opacity: 0;
+    font-size: 0.8rem;
+}
+
+.theme-switcher__option--active .theme-switcher__option-check {
+    opacity: 1;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .theme-switcher {
+        position: absolute;
+        top: 50%;
+        right: 60px;
+        transform: translateY(-50%);
+        margin-left: 0;
+    }
+    .theme-switcher__btn span:not(.theme-switcher__icon) {
+        display: none;
+    }
+    .theme-switcher__btn {
+        padding: 6px 8px;
+    }
+}
+
+
+/* ============================================
+   ╔══════════════════════════════════════════╗
+   ║     THEME: WALKMAN (80s kassett-æra)     ║
+   ╚══════════════════════════════════════════╝
+
+   Design-filosofi:
+   - Sony produktkatalog fra 1985
+   - Fysiske knapper med 3D-dybde (bevel/emboss)
+   - Avrundede hjørner (soft-touch plastikk)
+   - Varme analoge toner, metalliske aksenter
+   - Font: "Space Mono" for teknisk retro,
+     "Abril Fatface" for display (Art Deco-aktig)
+   ============================================ */
+
+[data-theme="walkman"] {
+    /* --- Farger --- */
+    --color-bg-primary: #1a1510;
+    --color-bg-secondary: #211c14;
+    --color-bg-elevated: #2c2519;
+    --color-bg-card: #251f16;
+
+    --color-text-primary: #f0e6d3;
+    --color-text-secondary: #bfad92;
+    --color-text-muted: #7d6c55;
+
+    --color-accent-primary: #4a90c4;
+    --color-accent-secondary: #c0a050;
+    --color-accent-highlight: #72b8e8;
+    --color-accent-experimental: #d4a845;
+
+    --color-border: #3d3226;
+    --color-border-light: #4f4234;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 3px 10px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 6px 20px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 15px rgba(74, 144, 196, 0.3);
+
+    /* --- Fonter --- */
+    --font-primary: 'Space Mono', 'Courier New', monospace;
+    --font-display: 'Abril Fatface', 'Georgia', serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+
+    /* --- Form --- */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+}
+
+/* Header — mørk aluminium */
+[data-theme="walkman"] .site-header {
+    background: rgba(26, 21, 16, 0.96);
+    border-bottom: 2px solid #3d3226;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Nav-logo som preget metalltext */
+[data-theme="walkman"] .nav__logo {
+    font-family: 'Abril Fatface', serif;
+    letter-spacing: 0.12em;
+    color: #c0a050;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="walkman"] .nav__link {
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+}
+
+/* Hero — sepia-tone + retro look */
+[data-theme="walkman"] .hero__background img {
+    filter: grayscale(25%) sepia(45%) brightness(0.75) contrast(1.1);
+}
+
+[data-theme="walkman"] .hero__background::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(26, 21, 16, 0.85) 0%,
+        rgba(26, 21, 16, 0.2) 50%,
+        rgba(26, 21, 16, 1) 100%
+    );
+}
+
+[data-theme="walkman"] .hero__subtitle {
+    font-family: 'Space Mono', monospace;
+    color: #c0a050;
+    letter-spacing: 0.35em;
+    border: 1px solid #c0a050;
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+}
+
+[data-theme="walkman"] .hero__title {
+    font-family: 'Abril Fatface', serif;
+    letter-spacing: 0.02em;
+}
+
+[data-theme="walkman"] .hero__title span {
+    font-family: 'Space Mono', monospace;
+    font-style: normal;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+}
+
+/* Kassett-reel dekorasjon */
+[data-theme="walkman"] .hero::after {
+    content: '◉ ▬▬▬▬ ◉';
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: #c0a050;
+    opacity: 0.3;
+    letter-spacing: 2px;
+}
+
+/* Knapper — fysisk-3D-stil med bevel */
+[data-theme="walkman"] .btn {
+    font-family: 'Space Mono', monospace;
+    border-radius: 24px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+[data-theme="walkman"] .btn--primary {
+    background: linear-gradient(180deg, #5ea0d4 0%, #3878a8 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+        0 3px 6px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+[data-theme="walkman"] .btn--primary:hover {
+    background: linear-gradient(180deg, #72b8e8 0%, #4a90c4 100%);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.25) inset,
+        0 0 20px rgba(74, 144, 196, 0.3);
+    transform: translateY(-1px);
+}
+
+[data-theme="walkman"] .btn--secondary {
+    border: 2px solid #4f4234;
+    border-radius: 24px;
+    color: #bfad92;
+}
+
+[data-theme="walkman"] .btn--secondary:hover {
+    border-color: #c0a050;
+    color: #c0a050;
+    background: rgba(192, 160, 80, 0.08);
+}
+
+/* Section labels — etikett-stil */
+[data-theme="walkman"] .section__label {
+    font-family: 'Space Mono', monospace;
+    color: #c0a050;
+    letter-spacing: 0.25em;
+    border-bottom: 1px dashed #c0a050;
+    display: inline-block;
+    padding-bottom: 4px;
+}
+
+[data-theme="walkman"] .section__title {
+    font-family: 'Abril Fatface', serif;
+}
+
+/* Prosjektkort — kassettboks-stil */
+[data-theme="walkman"] .project-card {
+    border: 2px solid #3d3226;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="walkman"] .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4a90c4, #c0a050, #4a90c4);
+    z-index: 2;
+}
+
+[data-theme="walkman"] .project-card:hover {
+    border-color: #4a90c4;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="walkman"] .project-card__category {
+    font-family: 'Space Mono', monospace;
+    color: #c0a050;
+    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+}
+
+[data-theme="walkman"] .project-card__title {
+    font-family: 'Abril Fatface', serif;
+    font-weight: 400;
+}
+
+[data-theme="walkman"] .project-card__description {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+[data-theme="walkman"] .project-card__link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+[data-theme="walkman"] .project-card__image img {
+    filter: saturate(0.8) contrast(1.05) sepia(0.1);
+}
+
+[data-theme="walkman"] .project-card:hover .project-card__image img {
+    filter: saturate(1) contrast(1.1) sepia(0);
+}
+
+/* Gear-kort — teknisk spesifikasjons-stil */
+[data-theme="walkman"] .gear-card {
+    border: 2px solid #3d3226;
+    border-radius: 16px;
+}
+
+[data-theme="walkman"] .gear-card:hover {
+    border-color: #4a90c4;
+}
+
+[data-theme="walkman"] .gear-card__title {
+    font-family: 'Abril Fatface', serif;
+}
+
+[data-theme="walkman"] .gear-card__description {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+[data-theme="walkman"] .gear-card__image img {
+    filter: saturate(0.85) contrast(1.05);
+    border-radius: 14px 14px 0 0;
+}
+
+[data-theme="walkman"] .gear-card:hover .gear-card__image img {
+    filter: saturate(1) contrast(1.1);
+}
+
+/* Om-seksjon */
+[data-theme="walkman"] .about__title {
+    font-family: 'Abril Fatface', serif;
+}
+
+[data-theme="walkman"] .about__text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
+[data-theme="walkman"] .about__stat-value {
+    font-family: 'Abril Fatface', serif;
+    color: #4a90c4;
+}
+
+[data-theme="walkman"] .about__stat-label {
+    font-family: 'Space Mono', monospace;
+}
+
+[data-theme="walkman"] .about__image::after {
+    border-color: #c0a050;
+    border-radius: 16px;
+}
+
+/* Audio Player — tape deck-stil */
+[data-theme="walkman"] .audio-player {
+    background: #2c2519;
+    border-top: 3px solid #4a90c4;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="walkman"] .audio-player__btn--play {
+    background: linear-gradient(180deg, #5ea0d4, #3878a8);
+    border-radius: 50%;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.15) inset,
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="walkman"] .audio-player__btn--play:hover {
+    background: linear-gradient(180deg, #72b8e8, #4a90c4);
+}
+
+[data-theme="walkman"] .audio-player__btn:hover {
+    color: #c0a050;
+    background: rgba(192, 160, 80, 0.1);
+    border-radius: 50%;
+}
+
+/* VU-meter progress bar */
+[data-theme="walkman"] .audio-player__progress-fill {
+    background: linear-gradient(90deg, #4a90c4 0%, #72b8e8 40%, #c0a050 80%, #d4a845 100%);
+    border-radius: 4px;
+}
+
+[data-theme="walkman"] .audio-player__progress-bar {
+    background: #3d3226;
+    border-radius: 4px;
+    height: 6px;
+}
+
+[data-theme="walkman"] .audio-player__title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+}
+
+[data-theme="walkman"] .audio-player__artist {
+    font-family: 'Space Mono', monospace;
+}
+
+[data-theme="walkman"] .audio-player__time {
+    font-family: 'Space Mono', monospace;
+    color: #c0a050;
+}
+
+[data-theme="walkman"] .audio-player__library-btn {
+    background: rgba(74, 144, 196, 0.12);
+    border: 2px solid #4a90c4 !important;
+    border-radius: 20px !important;
+}
+
+[data-theme="walkman"] .audio-player__library-label {
+    color: #4a90c4;
+    font-family: 'Space Mono', monospace;
+}
+
+/* Music Library */
+[data-theme="walkman"] .audio-library__header h3 {
+    font-family: 'Abril Fatface', serif;
+    color: #c0a050;
+}
+
+[data-theme="walkman"] .audio-library__category h4 {
+    font-family: 'Space Mono', monospace;
+}
+
+[data-theme="walkman"] .audio-library__album-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+}
+
+[data-theme="walkman"] .audio-library__track-title {
+    font-family: 'Space Mono', monospace;
+}
+
+/* Kontakt */
+[data-theme="walkman"] .contact__title {
+    font-family: 'Abril Fatface', serif;
+}
+
+[data-theme="walkman"] .contact__description {
+    font-family: 'Space Mono', monospace;
+}
+
+[data-theme="walkman"] .contact__email {
+    border: 2px solid #3d3226;
+    border-radius: 24px;
+    font-family: 'Space Mono', monospace;
+}
+
+[data-theme="walkman"] .contact__email:hover {
+    border-color: #4a90c4;
+    background: rgba(74, 144, 196, 0.08);
+}
+
+[data-theme="walkman"] .contact__social-link {
+    border: 2px solid #3d3226;
+    border-radius: 50%;
+}
+
+[data-theme="walkman"] .contact__social-link:hover {
+    border-color: #c0a050;
+    color: #c0a050;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Timeline — kassett-tape linje */
+[data-theme="walkman"] .timeline::before {
+    background: linear-gradient(180deg, #4a90c4 0%, #c0a050 100%);
+    width: 3px;
+}
+
+[data-theme="walkman"] .timeline-item::before {
+    background: linear-gradient(135deg, #c0a050, #d4a845);
+    border: 3px solid #1a1510;
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 0 2px #c0a050;
+}
+
+[data-theme="walkman"] .timeline-year {
+    font-family: 'Space Mono', monospace;
+    color: #4a90c4;
+}
+
+[data-theme="walkman"] .timeline-title {
+    font-family: 'Abril Fatface', serif;
+}
+
+[data-theme="walkman"] .timeline-description {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+/* Nyheter */
+[data-theme="walkman"] .news-item__date {
+    font-family: 'Space Mono', monospace;
+    color: #4a90c4;
+}
+
+[data-theme="walkman"] .news-item__content h3 {
+    font-family: 'Abril Fatface', serif;
+}
+
+[data-theme="walkman"] .news-item__content p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+}
+
+/* Album-sider */
+[data-theme="walkman"] .album-hero__type {
+    font-family: 'Space Mono', monospace;
+    color: #c0a050;
+    border: 1px solid #c0a050;
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+}
+
+[data-theme="walkman"] .album-hero__title {
+    font-family: 'Abril Fatface', serif;
+}
+
+[data-theme="walkman"] .album-hero__cover {
+    border-radius: 16px;
+    border: 3px solid #3d3226;
+}
+
+[data-theme="walkman"] .tracklist {
+    border-radius: 16px;
+    border: 2px solid #3d3226;
+}
+
+[data-theme="walkman"] .track__title {
+    font-family: 'Space Mono', monospace;
+}
+
+[data-theme="walkman"] .credits {
+    border-radius: 16px;
+    border: 2px solid #3d3226;
+}
+
+[data-theme="walkman"] .credits__title {
+    font-family: 'Abril Fatface', serif;
+}
+
+/* Footer */
+[data-theme="walkman"] .site-footer {
+    border-top: 3px solid #4a90c4;
+}
+
+[data-theme="walkman"] .site-footer__copyright {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+}
+
+[data-theme="walkman"] .site-footer__version {
+    font-family: 'Space Mono', monospace;
+    color: #c0a050;
+}
+
+/* Scrollbar */
+[data-theme="walkman"] ::-webkit-scrollbar { width: 10px; }
+[data-theme="walkman"] ::-webkit-scrollbar-track { background: #1a1510; }
+[data-theme="walkman"] ::-webkit-scrollbar-thumb {
+    background: #3d3226;
+    border-radius: 5px;
+    border: 2px solid #1a1510;
+}
+[data-theme="walkman"] ::-webkit-scrollbar-thumb:hover { background: #4a90c4; }
+
+/* Theme switcher tilpasset */
+[data-theme="walkman"] .theme-switcher__btn {
+    border-radius: 20px;
+    border: 2px solid #4f4234;
+    font-family: 'Space Mono', monospace;
+    background: #2c2519;
+}
+
+[data-theme="walkman"] .theme-switcher__btn:hover {
+    border-color: #c0a050;
+    color: #c0a050;
+}
+
+[data-theme="walkman"] .theme-switcher__menu {
+    border-radius: 16px;
+    border: 2px solid #4f4234;
+    background: #2c2519;
+}
+
+[data-theme="walkman"] .theme-switcher__option {
+    font-family: 'Space Mono', monospace;
+    border-radius: 10px;
+    font-size: 0.78rem;
+}
+
+
+/* ============================================
+   ╔══════════════════════════════════════════╗
+   ║     THEME: VHS / SYNTHWAVE              ║
+   ╚══════════════════════════════════════════╝
+
+   Design-filosofi:
+   - VHS-kassett + synthwave-estetikk
+   - CRT-skjerm med scanlines og vignette
+   - Neon-glow på alt interaktivt
+   - Skarpe geometriske former (0-radius eller kutte-hjørner)
+   - Font: "Orbitron" for display (futuristisk),
+     "Share Tech Mono" for tekst (terminal-stil)
+   ============================================ */
+
+[data-theme="vhs"] {
+    /* --- Farger --- */
+    --color-bg-primary: #08000f;
+    --color-bg-secondary: #0d0016;
+    --color-bg-elevated: #13001f;
+    --color-bg-card: #10001a;
+
+    --color-text-primary: #e8dff5;
+    --color-text-secondary: #9585ad;
+    --color-text-muted: #5a4575;
+
+    --color-accent-primary: #ff2d95;
+    --color-accent-secondary: #00e5ff;
+    --color-accent-highlight: #ff6eb4;
+    --color-accent-experimental: #b44dff;
+
+    --color-border: #2a1540;
+    --color-border-light: #3d2260;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.8);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.8);
+    --shadow-glow: 0 0 15px rgba(255, 45, 149, 0.4), 0 0 30px rgba(255, 45, 149, 0.2);
+
+    /* --- Fonter --- */
+    --font-primary: 'Share Tech Mono', 'Courier New', monospace;
+    --font-display: 'Orbitron', 'Arial Black', sans-serif;
+    --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+
+    /* --- Form — skarpe kanter, sci-fi --- */
+    --radius-sm: 0px;
+    --radius-md: 2px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+}
+
+/* Scanline-effekt over hele siden */
+[data-theme="vhs"] body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.06) 2px,
+        rgba(0, 0, 0, 0.06) 4px
+    );
+}
+
+/* CRT vignette */
+[data-theme="vhs"] body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 55%,
+        rgba(0, 0, 0, 0.45) 100%
+    );
+}
+
+/* Header — neon-underline */
+[data-theme="vhs"] .site-header {
+    background: rgba(8, 0, 15, 0.96);
+    border-bottom: none;
+    box-shadow:
+        0 1px 0 #ff2d95,
+        0 2px 0 rgba(0, 229, 255, 0.3),
+        0 4px 20px rgba(255, 45, 149, 0.15);
+}
+
+/* Nav-logo — neon glow */
+[data-theme="vhs"] .nav__logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ff2d95;
+    text-shadow:
+        0 0 7px rgba(255, 45, 149, 0.9),
+        0 0 20px rgba(255, 45, 149, 0.5),
+        0 0 40px rgba(255, 45, 149, 0.2);
+    letter-spacing: 0.2em;
+}
+
+[data-theme="vhs"] .nav__link {
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.15em;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+
+[data-theme="vhs"] .nav__link:hover {
+    color: #00e5ff;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+[data-theme="vhs"] .nav__link::after {
+    background: #00e5ff;
+    box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+[data-theme="vhs"] .nav__cta {
+    background: transparent;
+    border: 1px solid #ff2d95;
+    color: #ff2d95 !important;
+    box-shadow: 0 0 10px rgba(255, 45, 149, 0.2);
+}
+
+[data-theme="vhs"] .nav__cta:hover {
+    background: #ff2d95;
+    color: #fff !important;
+    box-shadow: 0 0 20px rgba(255, 45, 149, 0.5);
+}
+
+/* Hero — synthwave gradient sky */
+[data-theme="vhs"] .hero__background img {
+    filter: grayscale(60%) brightness(0.4) contrast(1.4) hue-rotate(-10deg);
+}
+
+[data-theme="vhs"] .hero__background::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(8, 0, 15, 0.9) 0%,
+        rgba(30, 0, 60, 0.3) 40%,
+        rgba(8, 0, 15, 0.2) 65%,
+        rgba(8, 0, 15, 1) 100%
+    );
+}
+
+[data-theme="vhs"] .hero__subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+    letter-spacing: 0.5em;
+    border: none;
+    padding: 0;
+}
+
+[data-theme="vhs"] .hero__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-shadow:
+        0 0 10px rgba(255, 45, 149, 0.4),
+        0 0 30px rgba(255, 45, 149, 0.15);
+}
+
+[data-theme="vhs"] .hero__title span {
+    font-family: 'Share Tech Mono', monospace;
+    font-style: normal;
+    text-transform: none;
+    letter-spacing: 0.1em;
+    color: #9585ad;
+}
+
+[data-theme="vhs"] .hero__description {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* VHS REC indicator i hero */
+[data-theme="vhs"] .hero::after {
+    content: '● REC  00:00:00';
+    position: absolute;
+    top: 100px;
+    right: 30px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: #ff2d95;
+    text-shadow: 0 0 5px rgba(255, 45, 149, 0.6);
+    opacity: 0.6;
+    animation: vhs-blink 1.5s ease-in-out infinite;
+    letter-spacing: 0.1em;
+}
+
+@keyframes vhs-blink {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.2; }
+}
+
+/* Knapper — neon-outlined, skarpe */
+[data-theme="vhs"] .btn {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 0;
+}
+
+[data-theme="vhs"] .btn--primary {
+    background: transparent;
+    border: 2px solid #ff2d95;
+    color: #ff2d95;
+    box-shadow: 0 0 10px rgba(255, 45, 149, 0.2), inset 0 0 10px rgba(255, 45, 149, 0.05);
+    text-shadow: 0 0 5px rgba(255, 45, 149, 0.5);
+}
+
+[data-theme="vhs"] .btn--primary:hover {
+    background: #ff2d95;
+    color: #fff;
+    box-shadow:
+        0 0 20px rgba(255, 45, 149, 0.5),
+        0 0 40px rgba(255, 45, 149, 0.2),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
+    text-shadow: none;
+    transform: translateY(-2px);
+}
+
+[data-theme="vhs"] .btn--secondary {
+    border: 2px solid #00e5ff;
+    color: #00e5ff;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.4);
+}
+
+[data-theme="vhs"] .btn--secondary:hover {
+    background: #00e5ff;
+    color: #08000f;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    text-shadow: none;
+}
+
+/* Section labels — terminal-tekst */
+[data-theme="vhs"] .section__label {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+    letter-spacing: 0.35em;
+}
+
+[data-theme="vhs"] .section__label::before {
+    content: '> ';
+    color: #ff2d95;
+}
+
+[data-theme="vhs"] .section__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Prosjektkort — holo-card med neon-border */
+[data-theme="vhs"] .project-card {
+    border: 1px solid #2a1540;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Neon corner accents */
+[data-theme="vhs"] .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff2d95, transparent 30%, transparent 70%, #00e5ff);
+    z-index: 2;
+}
+
+[data-theme="vhs"] .project-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00e5ff, transparent 30%, transparent 70%, #ff2d95);
+    z-index: 2;
+}
+
+[data-theme="vhs"] .project-card:hover {
+    border-color: #ff2d95;
+    box-shadow:
+        0 0 20px rgba(255, 45, 149, 0.15),
+        inset 0 0 30px rgba(255, 45, 149, 0.03);
+    transform: translateY(-4px);
+}
+
+[data-theme="vhs"] .project-card__category {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 4px rgba(0, 229, 255, 0.4);
+    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+}
+
+[data-theme="vhs"] .project-card__category::before {
+    content: '[ ';
+    color: #5a4575;
+}
+
+[data-theme="vhs"] .project-card__category::after {
+    content: ' ]';
+    color: #5a4575;
+}
+
+[data-theme="vhs"] .project-card__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+}
+
+[data-theme="vhs"] .project-card__description {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+[data-theme="vhs"] .project-card__link {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+}
+
+[data-theme="vhs"] .project-card__image img {
+    filter: saturate(0.6) contrast(1.3) brightness(0.85) hue-rotate(-5deg);
+}
+
+[data-theme="vhs"] .project-card:hover .project-card__image img {
+    filter: saturate(0.8) contrast(1.4) brightness(0.9);
+    animation: vhs-glitch 0.3s ease;
+}
+
+/* Gear-kort — teknisk terminal-stil */
+[data-theme="vhs"] .gear-card {
+    border: 1px solid #2a1540;
+    border-radius: 0;
+}
+
+[data-theme="vhs"] .gear-card:hover {
+    border-color: #00e5ff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+}
+
+[data-theme="vhs"] .gear-card__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+[data-theme="vhs"] .gear-card__description {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+[data-theme="vhs"] .gear-card__image img {
+    filter: saturate(0.6) contrast(1.25) brightness(0.85);
+}
+
+[data-theme="vhs"] .gear-card:hover .gear-card__image img {
+    filter: saturate(0.8) contrast(1.35) brightness(0.95);
+}
+
+/* Om-seksjon */
+[data-theme="vhs"] .about__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+[data-theme="vhs"] .about__text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+[data-theme="vhs"] .about__stat-value {
+    font-family: 'Orbitron', sans-serif;
+    color: #ff2d95;
+    text-shadow: 0 0 8px rgba(255, 45, 149, 0.5);
+}
+
+[data-theme="vhs"] .about__stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+}
+
+[data-theme="vhs"] .about__image::after {
+    border: 1px solid #ff2d95;
+    border-radius: 0;
+    box-shadow: 0 0 10px rgba(255, 45, 149, 0.15);
+}
+
+/* Audio Player — HUD-stil */
+[data-theme="vhs"] .audio-player {
+    background: rgba(8, 0, 15, 0.98);
+    border-top: 2px solid #ff2d95;
+    box-shadow:
+        0 -1px 0 rgba(0, 229, 255, 0.2),
+        0 -4px 20px rgba(255, 45, 149, 0.1);
+}
+
+[data-theme="vhs"] .audio-player__btn--play {
+    background: transparent;
+    border: 2px solid #ff2d95;
+    color: #ff2d95;
+    border-radius: 0;
+    box-shadow: 0 0 8px rgba(255, 45, 149, 0.3);
+}
+
+[data-theme="vhs"] .audio-player__btn--play:hover {
+    background: #ff2d95;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 45, 149, 0.5);
+}
+
+[data-theme="vhs"] .audio-player__btn:hover {
+    color: #00e5ff;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+    background: rgba(0, 229, 255, 0.05);
+}
+
+[data-theme="vhs"] .audio-player__progress-fill {
+    background: linear-gradient(90deg, #ff2d95, #b44dff, #00e5ff);
+    box-shadow: 0 0 6px rgba(255, 45, 149, 0.4);
+}
+
+[data-theme="vhs"] .audio-player__progress-bar {
+    background: #1a0d2a;
+    border-radius: 0;
+    height: 3px;
+}
+
+[data-theme="vhs"] .audio-player__title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+}
+
+[data-theme="vhs"] .audio-player__artist {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+[data-theme="vhs"] .audio-player__time {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 3px rgba(0, 229, 255, 0.4);
+}
+
+[data-theme="vhs"] .audio-player__library-btn {
+    background: rgba(255, 45, 149, 0.06);
+    border: 1px solid #ff2d95 !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 8px rgba(255, 45, 149, 0.1);
+}
+
+[data-theme="vhs"] .audio-player__library-label {
+    color: #ff2d95;
+    font-family: 'Share Tech Mono', monospace;
+    text-shadow: 0 0 3px rgba(255, 45, 149, 0.4);
+}
+
+/* Music Library */
+[data-theme="vhs"] .audio-library {
+    border-top: 1px solid #ff2d95;
+}
+
+[data-theme="vhs"] .audio-library__header h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: #ff2d95;
+    text-shadow: 0 0 5px rgba(255, 45, 149, 0.4);
+}
+
+[data-theme="vhs"] .audio-library__category h4 {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+}
+
+[data-theme="vhs"] .audio-library__album-title {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+[data-theme="vhs"] .audio-library__album:hover {
+    background: rgba(255, 45, 149, 0.08);
+}
+
+[data-theme="vhs"] .audio-library__track:hover {
+    background: rgba(255, 45, 149, 0.08);
+}
+
+[data-theme="vhs"] .audio-library__track--active {
+    background: rgba(255, 45, 149, 0.12);
+}
+
+/* Kontakt */
+[data-theme="vhs"] .contact__title {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+}
+
+[data-theme="vhs"] .contact__description {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+[data-theme="vhs"] .contact__email {
+    border: 1px solid #2a1540;
+    border-radius: 0;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+[data-theme="vhs"] .contact__email:hover {
+    border-color: #ff2d95;
+    background: rgba(255, 45, 149, 0.06);
+    box-shadow: 0 0 15px rgba(255, 45, 149, 0.15);
+}
+
+[data-theme="vhs"] .contact__social-link {
+    border: 1px solid #2a1540;
+    border-radius: 0;
+}
+
+[data-theme="vhs"] .contact__social-link:hover {
+    border-color: #00e5ff;
+    color: #00e5ff;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+}
+
+/* Tidslinje — neon-data-linje */
+[data-theme="vhs"] .timeline::before {
+    background: linear-gradient(180deg, #ff2d95 0%, #b44dff 50%, #00e5ff 100%);
+    width: 2px;
+    box-shadow: 0 0 8px rgba(255, 45, 149, 0.3);
+}
+
+[data-theme="vhs"] .timeline-item::before {
+    background: #ff2d95;
+    border: 2px solid #08000f;
+    box-shadow: 0 0 8px rgba(255, 45, 149, 0.6), 0 0 15px rgba(255, 45, 149, 0.2);
+}
+
+[data-theme="vhs"] .timeline-year {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+[data-theme="vhs"] .timeline-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+}
+
+[data-theme="vhs"] .timeline-description {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+/* Nyheter */
+[data-theme="vhs"] .news-item__date {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 3px rgba(0, 229, 255, 0.4);
+}
+
+[data-theme="vhs"] .news-item__content h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+}
+
+[data-theme="vhs"] .news-item__content p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+}
+
+/* Album-sider */
+[data-theme="vhs"] .album-hero__type {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+    letter-spacing: 0.25em;
+}
+
+[data-theme="vhs"] .album-hero__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+[data-theme="vhs"] .album-hero__cover {
+    border-radius: 0;
+    border: 1px solid #ff2d95;
+    box-shadow: 0 0 20px rgba(255, 45, 149, 0.15);
+}
+
+[data-theme="vhs"] .tracklist {
+    border-radius: 0;
+    border: 1px solid #2a1540;
+}
+
+[data-theme="vhs"] .tracklist__title {
+    font-family: 'Orbitron', sans-serif;
+}
+
+[data-theme="vhs"] .track__title {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+[data-theme="vhs"] .track:hover {
+    background: rgba(255, 45, 149, 0.06);
+}
+
+[data-theme="vhs"] .track--playing {
+    background: rgba(255, 45, 149, 0.1);
+}
+
+[data-theme="vhs"] .credits {
+    border-radius: 0;
+    border: 1px solid #2a1540;
+}
+
+[data-theme="vhs"] .credits__title {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Footer */
+[data-theme="vhs"] .site-footer {
+    border-top: 2px solid #ff2d95;
+    box-shadow: 0 -1px 0 rgba(0, 229, 255, 0.15);
+}
+
+[data-theme="vhs"] .site-footer__copyright {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+}
+
+[data-theme="vhs"] .site-footer__version {
+    font-family: 'Share Tech Mono', monospace;
+    color: #00e5ff;
+    text-shadow: 0 0 3px rgba(0, 229, 255, 0.4);
+}
+
+[data-theme="vhs"] .site-footer__link {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* Scrollbar */
+[data-theme="vhs"] ::-webkit-scrollbar { width: 6px; }
+[data-theme="vhs"] ::-webkit-scrollbar-track { background: #08000f; }
+[data-theme="vhs"] ::-webkit-scrollbar-thumb {
+    background: #2a1540;
+    border-radius: 0;
+}
+[data-theme="vhs"] ::-webkit-scrollbar-thumb:hover {
+    background: #ff2d95;
+    box-shadow: 0 0 5px rgba(255, 45, 149, 0.4);
+}
+
+/* Theme switcher tilpasset */
+[data-theme="vhs"] .theme-switcher__btn {
+    border-radius: 0;
+    border: 1px solid #3d2260;
+    font-family: 'Share Tech Mono', monospace;
+    background: #13001f;
+    text-shadow: 0 0 3px rgba(255, 45, 149, 0.3);
+}
+
+[data-theme="vhs"] .theme-switcher__btn:hover {
+    border-color: #ff2d95;
+    color: #ff2d95;
+    box-shadow: 0 0 8px rgba(255, 45, 149, 0.2);
+}
+
+[data-theme="vhs"] .theme-switcher__menu {
+    border-radius: 0;
+    border: 1px solid #3d2260;
+    background: #13001f;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 45, 149, 0.1);
+}
+
+[data-theme="vhs"] .theme-switcher__option {
+    font-family: 'Share Tech Mono', monospace;
+    border-radius: 0;
+    font-size: 0.8rem;
+}
+
+[data-theme="vhs"] .theme-switcher__option--active {
+    color: #ff2d95;
+    text-shadow: 0 0 4px rgba(255, 45, 149, 0.4);
+    background: rgba(255, 45, 149, 0.06);
+}
+
+[data-theme="vhs"] .theme-switcher__option:hover {
+    background: rgba(255, 45, 149, 0.06);
+    color: #ff2d95;
+}
+
+
+/* ============================================
+   ANIMASJONER PER TEMA
+   ============================================ */
+
+/* Walkman — varm puls */
+[data-theme="walkman"] .audio-player__library-btn--highlight {
+    animation: pulse-glow-walkman 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-walkman {
+    0%, 100% { box-shadow: 0 0 5px rgba(74, 144, 196, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(74, 144, 196, 0.5), 0 0 30px rgba(192, 160, 80, 0.2); }
+}
+
+/* VHS — neon puls */
+[data-theme="vhs"] .audio-player__library-btn--highlight {
+    animation: pulse-glow-vhs 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-vhs {
+    0%, 100% { box-shadow: 0 0 5px rgba(255, 45, 149, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(255, 45, 149, 0.6), 0 0 25px rgba(0, 229, 255, 0.2); }
+}
+
+/* VHS glitch på kort-bilder */
+@keyframes vhs-glitch {
+    0% { transform: scale(1.05); }
+    15% { transform: scale(1.05) translateX(3px) skewX(0.5deg); }
+    30% { transform: scale(1.05) translateX(-2px); }
+    45% { transform: scale(1.05) translateX(1px) skewX(-0.3deg); }
+    60% { transform: scale(1.05) translateX(-1px); }
+    100% { transform: scale(1.05) translateX(0); }
+}
+
+
+/* ============================================
+   THEME TRANSITIONS
+   ============================================ */
+body.theme-transitioning,
+body.theme-transitioning *,
+body.theme-transitioning *::before,
+body.theme-transitioning *::after {
+    transition:
+        background-color 0.5s ease,
+        color 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        text-shadow 0.4s ease,
+        filter 0.5s ease !important;
+}

@@ -434,7 +434,7 @@
 
     <div class="popout-player" id="player">
         <div class="popout-track">
-            <img class="popout-cover" id="cover" src="images/icon/record.svg" alt="">
+            <img class="popout-cover" id="cover" src="images/icon/record.svg" alt="Plate-ikon">
             <div class="popout-info">
                 <div class="popout-title" id="title">Ingen spor valgt</div>
                 <div class="popout-artist" id="artist"></div>
@@ -732,7 +732,7 @@
                     const isActive = this.currentAlbum?.id === album.id;
                     const isExpanded = isActive;
                     html += `<button class="popout-library__album${isActive ? ' active' : ''}${isExpanded ? ' expanded' : ''}" data-album-id="${album.id}">
-                        <img class="popout-library__album-cover" src="${album.cover}" onerror="this.src='images/icon/record.svg'" alt="">
+                        <img class="popout-library__album-cover" src="${album.cover}" onerror="this.src='images/icon/record.svg'" alt="Albumcover">
                         <div class="popout-library__album-info">
                             <div class="popout-library__album-title">${album.title}</div>
                             <div class="popout-library__album-artist">${album.artist} · ${album.year || ''}</div>

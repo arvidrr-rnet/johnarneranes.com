@@ -1,6 +1,6 @@
 /**
  * news.js — Laster og viser nyheter/tidslinje fra data/news.json
- * 
+ *
  * Brukes på:
  *   - index.html: Viser siste 3 nyheter i «Aktuelt»-seksjonen
  *   - Timeline.html: Viser alle oppføringer gruppert etter år
@@ -9,21 +9,39 @@
 (function () {
     'use strict';
 
-    const NEWS_JSON_PATH = 'data/news.json';
+    /**
+     * Konstruerer korrekt sti til news.json basert på gjeldende side-URL.
+     * Håndterer subdirectory-deployments (f.eks. GitHub Pages).
+     */
+    function getNewsJsonUrl() {
+        // Bruk base-elementet hvis det finnes
+        var base = document.querySelector('base[href]');
+        if (base) {
+            return new URL('data/news.json', base.href).href;
+        }
+        // Standard relativ sti — fungerer for de fleste tilfeller
+        return 'data/news.json';
+    }
+
+    var NEWS_JSON_URL = getNewsJsonUrl();
 
     /**
      * Henter news.json og returnerer sortert array (nyeste først)
      */
     async function loadNews() {
         try {
-            const response = await fetch(NEWS_JSON_PATH);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const news = await response.json();
+            var response = await fetch(NEWS_JSON_URL);
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+            }
+            var news = await response.json();
             // Sorter nyeste først
-            news.sort((a, b) => new Date(b.date) - new Date(a.date));
+            news.sort(function (a, b) {
+                return new Date(b.date) - new Date(a.date);
+            });
             return news;
         } catch (err) {
-            console.error('Kunne ikke laste nyheter:', err);
+            console.error('[news.js] Kunne ikke laste nyheter fra ' + NEWS_JSON_URL + ':', err);
             return [];
         }
     }
@@ -32,11 +50,11 @@
      * Formaterer ISO-dato til norsk format (DD.MM.ÅÅÅÅ)
      */
     function formatDate(isoDate) {
-        const d = new Date(isoDate);
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
-        return `${day}.${month}.${year}`;
+        var d = new Date(isoDate);
+        var day = String(d.getDate()).padStart(2, '0');
+        var month = String(d.getMonth() + 1).padStart(2, '0');
+        var year = d.getFullYear();
+        return day + '.' + month + '.' + year;
     }
 
     /**
@@ -52,27 +70,27 @@
      * Bygg en nyhets-artikkel for forsiden
      */
     function createNewsItem(item) {
-        const article = document.createElement('article');
+        var article = document.createElement('article');
         article.className = 'news-item reveal reveal--visible';
 
-        const time = document.createElement('time');
+        var time = document.createElement('time');
         time.className = 'news-item__date';
         time.textContent = formatDate(item.date);
         article.appendChild(time);
 
-        const content = document.createElement('div');
+        var content = document.createElement('div');
         content.className = 'news-item__content';
 
-        const h3 = document.createElement('h3');
+        var h3 = document.createElement('h3');
         h3.textContent = item.title;
         content.appendChild(h3);
 
-        const p = document.createElement('p');
+        var p = document.createElement('p');
         p.textContent = item.description;
         content.appendChild(p);
 
         if (item.link) {
-            const a = document.createElement('a');
+            var a = document.createElement('a');
             a.href = item.link;
             a.className = 'btn btn--ghost';
             a.textContent = item.linkText || 'Les mer →';
@@ -91,16 +109,21 @@
      * Rendrer nyheter på forsiden (max 3, bare de med link = synlige nyheter)
      */
     async function renderIndexNews() {
-        const container = document.querySelector('.news-list');
+        var container = document.querySelector('.news-list');
         if (!container) return;
 
-        const news = await loadNews();
+        var news = await loadNews();
         // Vis bare oppføringer som har link (ekte nyheter, ikke bare tidslinje-milepæler)
-        const visibleNews = news.filter(n => n.link);
-        const latest = visibleNews.slice(0, 3);
+        var visibleNews = news.filter(function (n) { return n.link; });
+        var latest = visibleNews.slice(0, 3);
+
+        if (latest.length === 0) {
+            console.warn('[news.js] Ingen nyheter å vise (0 oppføringer med link)');
+            return;
+        }
 
         container.innerHTML = '';
-        latest.forEach(item => {
+        latest.forEach(function (item) {
             container.appendChild(createNewsItem(item));
         });
 
@@ -116,20 +139,20 @@
      * Bygg et tidslinje-element
      */
     function createTimelineItem(item) {
-        const div = document.createElement('div');
+        var div = document.createElement('div');
         div.className = 'timeline-item reveal reveal--visible';
 
-        const yearDiv = document.createElement('div');
+        var yearDiv = document.createElement('div');
         yearDiv.className = 'timeline-year';
         yearDiv.textContent = getYear(item.date);
         div.appendChild(yearDiv);
 
-        const h3 = document.createElement('h3');
+        var h3 = document.createElement('h3');
         h3.className = 'timeline-title';
         h3.textContent = item.title;
         div.appendChild(h3);
 
-        const p = document.createElement('p');
+        var p = document.createElement('p');
         p.className = 'timeline-description';
         p.textContent = item.description;
         div.appendChild(p);
@@ -141,36 +164,36 @@
      * Rendrer tidslinje gruppert etter år
      */
     async function renderTimeline() {
-        const container = document.querySelector('.timeline');
+        var container = document.querySelector('.timeline');
         if (!container) return;
 
-        const news = await loadNews();
+        var news = await loadNews();
 
-        // Grupper etter år — bruk bare timeline-oppføringer 
-        // eller alle nyheter for en komplett tidslinje
-        const grouped = {};
-        news.forEach(item => {
-            const year = getYear(item.date);
+        if (news.length === 0) {
+            console.warn('[news.js] Ingen data for tidslinje');
+            return;
+        }
+
+        // Grupper etter år
+        var grouped = {};
+        news.forEach(function (item) {
+            var year = getYear(item.date);
             if (!grouped[year]) grouped[year] = [];
             grouped[year].push(item);
         });
 
         // Sorter år synkende
-        const years = Object.keys(grouped).sort((a, b) => b - a);
+        var years = Object.keys(grouped).sort(function (a, b) { return b - a; });
 
         container.innerHTML = '';
-        years.forEach(year => {
-            // For hvert år: vis en sammenslått oppføring hvis det finnes en timeline-milepæl,
-            // ellers vis individuelle nyheter
-            const yearItems = grouped[year];
-            const milestone = yearItems.find(i => i.timeline);
+        years.forEach(function (year) {
+            var yearItems = grouped[year];
+            var milestone = yearItems.find(function (i) { return i.timeline; });
 
             if (milestone) {
-                // Vis milepæl-oppføringen som representerer hele året
                 container.appendChild(createTimelineItem(milestone));
             } else {
-                // Vis individuelle oppføringer for dette året
-                yearItems.forEach(item => {
+                yearItems.forEach(function (item) {
                     container.appendChild(createTimelineItem(item));
                 });
             }
@@ -185,7 +208,6 @@
     // ─── Init ─────────────────────────────────────────────────
 
     function init() {
-        // Avgjør hvilken side vi er på og rendre riktig visning
         if (document.querySelector('.timeline')) {
             renderTimeline();
         }

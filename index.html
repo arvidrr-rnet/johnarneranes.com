@@ -39,6 +39,31 @@
     
     <!-- Styles -->
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/themes.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MusicGroup",
+        "name": "John Arne Rånes",
+        "url": "https://johnarneranes.com",
+        "image": "https://johnarneranes.com/images/jar4.jpg",
+        "description": "Eksperimentell gitarist fra Norge, basert i København. Improvisasjon, noise og elektronikk.",
+        "genre": ["Experimental", "Noise", "Improvisation", "Electronic"],
+        "sameAs": [
+            "https://www.instagram.com/johnrnes/",
+            "https://www.youtube.com/channel/UCz7mJP3j6dXzjdCuUvNu1PA",
+            "https://johnarneranes.bandcamp.com/"
+        ],
+        "member": {
+            "@type": "Person",
+            "name": "John Arne Rånes",
+            "birthPlace": "Norge",
+            "knowsAbout": ["Guitar", "Experimental Music", "Improvisation", "Noise"]
+        }
+    }
+    </script>
 </head>
 <body>
     <!-- Skip Link for Accessibility -->
@@ -450,6 +475,7 @@
     
     <!-- Scripts -->
     <script src="js/main.js"></script>
+    <script src="js/theme-switcher.js"></script>
     <script src="js/news.js"></script>
     <script src="js/audioplayer.js"></script>
     <script src="js/spa-navigation.js"></script>

@@ -1900,6 +1900,91 @@ a:hover {
 }
 
 /* ============================================
+   FOCUS & ACCESSIBILITY STYLES
+   ============================================ */
+
+/* Synlig fokus-indikator for tastaturnavigasjon */
+:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 3px;
+}
+
+/* Fjern outline ved museklikk */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Knapper */
+.btn:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 3px;
+    box-shadow: var(--shadow-glow);
+}
+
+/* Navigasjonslenker */
+.nav__link:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 4px;
+    color: var(--color-text-primary);
+}
+
+.nav__link:focus-visible::after {
+    width: 100%;
+}
+
+/* Kort — hele kortet får fokusring */
+.project-card:focus-within {
+    border-color: var(--color-accent-primary);
+    box-shadow: var(--shadow-glow);
+}
+
+.gear-card:focus-within {
+    border-color: var(--color-accent-primary);
+}
+
+/* Audio Player knapper */
+.audio-player__btn:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+    color: var(--color-accent-primary);
+}
+
+/* Tracklist */
+.track:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: -2px;
+    background: rgba(201, 169, 98, 0.05);
+}
+
+/* Social-lenker */
+.contact__social-link:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 3px;
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+}
+
+/* E-post kontakt */
+.contact__email:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 3px;
+    border-color: var(--color-accent-primary);
+}
+
+/* Footer-lenker */
+.site-footer__link:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 3px;
+}
+
+/* Generelle lenker i innhold */
+a:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+}
+
+
+/* ============================================
    PRINT STYLES
    ============================================ */
 @media print {

@@ -2,44 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://johnarneranes.com/</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://johnarneranes.com/solo.html</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://johnarneranes.com/subtoner.html</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://johnarneranes.com/idm.html</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://johnarneranes.com/elegant.html</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://johnarneranes.com/archive.html</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://johnarneranes.com/timeline.html</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-17</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://johnarneranes.com/gear-gitar-ordinarium.html</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
     </url>
 </urlset>
