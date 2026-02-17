@@ -75,9 +75,10 @@
             <a href="index.html" class="nav__logo">JAR</a>
             
             <ul class="nav__links">
-                <li><a href="index.html#about" class="nav__link">Om</a></li>
+                <li><a href="index.html#news" class="nav__link">Nyheter</a></li>
                 <li><a href="index.html#projects" class="nav__link">Prosjekter</a></li>
                 <li><a href="index.html#gear" class="nav__link">Utstyr</a></li>
+                <li><a href="index.html#about" class="nav__link">Om</a></li>
                 <li><a href="timeline.html" class="nav__link">Tidslinje</a></li>
                 <li><a href="index.html#contact" class="nav__link nav__cta">Kontakt</a></li>
             </ul>
@@ -119,49 +120,21 @@
     
     <!-- Main Content -->
     <main id="main-content">
-        
-        <!-- About Section -->
-        <section class="section section--dark" id="about">
-            <div class="about reveal">
-                <div class="about__image">
-                    <img src="images/jar4.jpg" alt="John Arne Rånes med gitar" loading="lazy">
+
+        <!-- News Section -->
+        <section class="section" id="news">
+            <div class="container container--narrow">
+                <div class="section__header reveal">
+                    <span class="section__label">Oppdateringer</span>
+                    <h2 class="section__title">Nyheter</h2>
                 </div>
-                <div class="about__content">
-                    <span class="section__label">Om kunstneren</span>
-                    <h2 class="about__title">En reise gjennom lyd</h2>
-                    <p class="about__text">
-                        John Arne Rånes er en eksperimentell gitarist fra Norge, nå bosatt i København. 
-                        Med fokus på improvisasjon, noise og elektronikk utforsker han grensene mellom 
-                        musikk og lyd.
-                    </p>
-                    <p class="about__text">
-                        Han er kjent for sitt unike instrument <strong>Gitar Ordinarium</strong> — 
-                        en spesialbygd gitar med 6 sustainere, laget av gitarmaker 
-                        <a href="https://www.jelinstruments.com/">Jens Erik Larsen</a>.
-                    </p>
-                    <p class="about__text">
-                        John Arne er aktiv i flere prosjekter inkludert <em>Statoil</em>, 
-                        <em>Ymse Impro</em>, <em>Anorektum</em>, og diverse soloverk.
-                    </p>
-                    
-                    <div class="about__stats">
-                        <div class="about__stat">
-                            <span class="about__stat-value">6+</span>
-                            <span class="about__stat-label">Aktive prosjekter</span>
-                        </div>
-                        <div class="about__stat">
-                            <span class="about__stat-value">15+</span>
-                            <span class="about__stat-label">Utgivelser</span>
-                        </div>
-                        <div class="about__stat">
-                            <span class="about__stat-value">CPH</span>
-                            <span class="about__stat-label">Basert i</span>
-                        </div>
-                    </div>
+
+                <div class="news-list">
+                    <!-- Lastes dynamisk fra data/news.json via js/news.js -->
                 </div>
             </div>
         </section>
-        
+
         <!-- Projects Section -->
         <section class="section" id="projects">
             <div class="container">
@@ -399,20 +372,48 @@
             </div>
         </section>
         
-        <!-- News Section -->
-        <section class="section" id="news">
-            <div class="container container--narrow">
-                <div class="section__header reveal">
-                    <span class="section__label">Oppdateringer</span>
-                    <h2 class="section__title">Nyheter</h2>
+        <!-- About Section -->
+        <section class="section section--dark" id="about">
+            <div class="about reveal">
+                <div class="about__image">
+                    <img src="images/jar4.jpg" alt="John Arne Rånes med gitar" loading="lazy">
                 </div>
-                
-                <div class="news-list">
-                    <!-- Lastes dynamisk fra data/news.json via js/news.js -->
+                <div class="about__content">
+                    <span class="section__label">Om kunstneren</span>
+                    <h2 class="about__title">En reise gjennom lyd</h2>
+                    <p class="about__text">
+                        John Arne Rånes er en eksperimentell gitarist fra Norge, nå bosatt i København.
+                        Med fokus på improvisasjon, noise og elektronikk utforsker han grensene mellom
+                        musikk og lyd.
+                    </p>
+                    <p class="about__text">
+                        Han er kjent for sitt unike instrument <strong>Gitar Ordinarium</strong> —
+                        en spesialbygd gitar med 6 sustainere, laget av gitarmaker
+                        <a href="https://www.jelinstruments.com/">Jens Erik Larsen</a>.
+                    </p>
+                    <p class="about__text">
+                        John Arne er aktiv i flere prosjekter inkludert <em>Statoil</em>,
+                        <em>Ymse Impro</em>, <em>Anorektum</em>, og diverse soloverk.
+                    </p>
+
+                    <div class="about__stats">
+                        <div class="about__stat">
+                            <span class="about__stat-value">6+</span>
+                            <span class="about__stat-label">Aktive prosjekter</span>
+                        </div>
+                        <div class="about__stat">
+                            <span class="about__stat-value">15+</span>
+                            <span class="about__stat-label">Utgivelser</span>
+                        </div>
+                        <div class="about__stat">
+                            <span class="about__stat-value">CPH</span>
+                            <span class="about__stat-label">Basert i</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-        
+
         <!-- Contact Section -->
         <section class="section section--elevated" id="contact">
             <div class="container">
