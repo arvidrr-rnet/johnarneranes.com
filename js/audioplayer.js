@@ -371,6 +371,51 @@ class AudioPlayer {
         this.libraryBtn.classList.remove('active');
     }
     
+    /**
+     * Spill av umiddelbart — brukes av «Lytt nå»-knappen.
+     * Samler ALLE spor fra alle album, shuffler, og spiller.
+     */
+    playNow() {
+        if (this.currentTrack) {
+            this.play();
+            this.showPlayer();
+            return;
+        }
+
+        if (!this.libraryLoaded || MUSIC_LIBRARY.albums.length === 0) {
+            this.toggleLibrary();
+            return;
+        }
+
+        // Samle alle spor fra alle album
+        var allTracks = [];
+        MUSIC_LIBRARY.albums.forEach(album => {
+            album.tracks.forEach(track => {
+                allTracks.push({
+                    ...track,
+                    artist: album.artist,
+                    albumId: album.id,
+                    cover: album.cover
+                });
+            });
+        });
+
+        // Shuffle (Fisher-Yates)
+        for (var i = allTracks.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = allTracks[i];
+            allTracks[i] = allTracks[j];
+            allTracks[j] = tmp;
+        }
+
+        this.currentAlbum = null;
+        this.currentPlaylist = allTracks;
+        this.currentIndex = 0;
+        this.loadTrack(this.currentPlaylist[0]);
+        this.play();
+        this.showPlayer();
+    }
+
     playAlbum(albumId, startIndex = 0) {
         const album = MUSIC_LIBRARY.albums.find(a => a.id === albumId);
         if (!album) return;
