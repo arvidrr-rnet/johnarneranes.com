@@ -426,69 +426,122 @@
     border-radius: 16px;
 }
 
-/* Audio Player — tape deck-stil */
+/* Audio Player — Walkman Kassettspiller (80s Sony-variant) */
 [data-theme="walkman"] .audio-player {
+    --deck-bg: #2c2519;
+    --deck-border: #4a90c4;
+    --lcd-bg: #1a1208;
+    --lcd-text: #c0a050;
+    --lcd-dim: #5a4828;
+    --btn-face: #3d3226;
+    --btn-edge: #4a90c4;
+    --rec-color: #d43030;
+    --rec-dim: #4a1515;
     background: #2c2519;
     border-top: 3px solid #4a90c4;
     box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="walkman"] .audio-player__btn--play {
-    background: linear-gradient(180deg, #5ea0d4, #3878a8);
-    border-radius: 50%;
-    box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.15) inset,
-        0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="walkman"] .audio-player__btn--play:hover {
-    background: linear-gradient(180deg, #72b8e8, #4a90c4);
-}
-
-[data-theme="walkman"] .audio-player__btn:hover {
-    color: #c0a050;
-    background: rgba(192, 160, 80, 0.1);
-    border-radius: 50%;
-}
-
-/* VU-meter progress bar */
-[data-theme="walkman"] .audio-player__progress-fill {
-    background: linear-gradient(90deg, #4a90c4 0%, #72b8e8 40%, #c0a050 80%, #d4a845 100%);
-    border-radius: 4px;
-}
-
-[data-theme="walkman"] .audio-player__progress-bar {
-    background: #3d3226;
-    border-radius: 4px;
-    height: 6px;
+[data-theme="walkman"] .audio-player__lcd {
+    background: #1a1208;
+    border-color: #3d3226;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.5), 0 0 4px rgba(192,160,80,0.05);
 }
 
 [data-theme="walkman"] .audio-player__title {
     font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
+    color: #c0a050;
+    text-shadow: 0 0 3px rgba(192,160,80,0.4);
 }
 
 [data-theme="walkman"] .audio-player__artist {
     font-family: 'Space Mono', monospace;
+    color: #5a4828;
 }
 
-[data-theme="walkman"] .audio-player__time {
-    font-family: 'Space Mono', monospace;
+[data-theme="walkman"] .audio-player__transport--play {
+    color: #4a90c4;
+    border-color: #4a90c4;
+    box-shadow: 1px 2px 0 rgba(0,0,0,0.4), 0 0 4px rgba(74,144,196,0.15);
+}
+
+[data-theme="walkman"] .audio-player__transport:hover {
     color: #c0a050;
+    background: rgba(192, 160, 80, 0.1);
+}
+
+[data-theme="walkman"] .audio-player__progress-fill {
+    background: linear-gradient(90deg, #4a90c4 0%, #72b8e8 40%, #c0a050 80%, #d4a845 100%);
+    border-radius: 2px;
+}
+
+[data-theme="walkman"] .audio-player__progress-bar {
+    background: #3d3226;
+    border-color: #4a3a2a;
+}
+
+[data-theme="walkman"] .audio-player__counter {
+    color: #c0a050;
+    text-shadow: 0 0 3px rgba(192,160,80,0.3);
+    background: #1a1208;
+    border-color: #3d3226;
 }
 
 [data-theme="walkman"] .audio-player__library-btn {
     background: rgba(74, 144, 196, 0.12);
     border: 2px solid #4a90c4 !important;
-    border-radius: 20px !important;
+    border-radius: 12px !important;
+    color: #4a90c4;
+}
+
+[data-theme="walkman"] .audio-player__library-btn:hover {
+    background: rgba(74, 144, 196, 0.2);
+    color: #72b8e8;
 }
 
 [data-theme="walkman"] .audio-player__library-label {
-    color: #4a90c4;
+    color: inherit;
     font-family: 'Space Mono', monospace;
 }
 
-/* Music Library */
+[data-theme="walkman"] .audio-player__tape-window {
+    background: #1a1208;
+    border-color: #3d3226;
+}
+
+[data-theme="walkman"] .audio-player__reel {
+    border-color: #4a90c4;
+}
+
+[data-theme="walkman"] .audio-player__vol-label {
+    color: #5a4828;
+}
+
+[data-theme="walkman"] .audio-player__volume-slider::-webkit-slider-thumb {
+    background: #4a90c4;
+    border-color: #72b8e8;
+}
+
+[data-theme="walkman"] .audio-player__btn:hover {
+    color: #c0a050;
+}
+
+[data-theme="walkman"] .audio-player__rec-led--active {
+    color: #d43030;
+    text-shadow: 0 0 6px rgba(212,48,48,0.6);
+}
+
+/* Music Library — Walkman */
+[data-theme="walkman"] .audio-library {
+    background: #2c2519;
+    border-top-color: #4a90c4;
+}
+
+[data-theme="walkman"] .audio-library__header {
+    background: #2c2519;
+    border-bottom-color: #3d3226;
+}
+
 [data-theme="walkman"] .audio-library__header h3 {
     font-family: 'Abril Fatface', serif;
     color: #c0a050;
@@ -1085,33 +1138,56 @@
     box-shadow: 0 0 10px rgba(255, 45, 149, 0.15);
 }
 
-/* Audio Player — HUD-stil */
+/* Audio Player — VHS Kassettspiller (Synthwave-variant) */
 [data-theme="vhs"] .audio-player {
-    background: rgba(8, 0, 15, 0.98);
+    --deck-bg: rgba(8, 0, 15, 0.98);
+    --deck-border: #ff2d95;
+    --lcd-bg: #0a0020;
+    --lcd-text: #00e5ff;
+    --lcd-dim: #004466;
+    --btn-face: #1a0d2a;
+    --btn-edge: #ff2d95;
+    --rec-color: #ff2d95;
+    --rec-dim: #4a0030;
+    background: var(--deck-bg);
     border-top: 2px solid #ff2d95;
     box-shadow:
         0 -1px 0 rgba(0, 229, 255, 0.2),
-        0 -4px 20px rgba(255, 45, 149, 0.1);
+        0 -4px 20px rgba(255, 45, 149, 0.15);
 }
 
-[data-theme="vhs"] .audio-player__btn--play {
-    background: transparent;
-    border: 2px solid #ff2d95;
-    color: #ff2d95;
-    border-radius: 0;
-    box-shadow: 0 0 8px rgba(255, 45, 149, 0.3);
+[data-theme="vhs"] .audio-player__lcd {
+    background: var(--lcd-bg);
+    border-color: #1a0050;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.5), 0 0 6px rgba(0,229,255,0.08);
 }
 
-[data-theme="vhs"] .audio-player__btn--play:hover {
-    background: #ff2d95;
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 45, 149, 0.5);
-}
-
-[data-theme="vhs"] .audio-player__btn:hover {
+[data-theme="vhs"] .audio-player__title {
     color: #00e5ff;
-    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-    background: rgba(0, 229, 255, 0.05);
+    text-shadow: 0 0 4px rgba(0,229,255,0.5);
+}
+
+[data-theme="vhs"] .audio-player__artist {
+    color: #004466;
+}
+
+[data-theme="vhs"] .audio-player__transport--play {
+    color: #ff2d95;
+    border-color: #ff2d95;
+    box-shadow: 1px 2px 0 rgba(0,0,0,0.4), 0 0 6px rgba(255,45,149,0.2);
+}
+
+[data-theme="vhs"] .audio-player__transport--play:hover {
+    box-shadow: 1px 2px 0 rgba(0,0,0,0.4), 0 0 12px rgba(255,45,149,0.4);
+}
+
+[data-theme="vhs"] .audio-player__transport:hover {
+    color: #00e5ff;
+    background: rgba(0,229,255,0.08);
+}
+
+[data-theme="vhs"] .audio-player__transport--stop {
+    color: #ff2d95;
 }
 
 [data-theme="vhs"] .audio-player__progress-fill {
@@ -1121,41 +1197,77 @@
 
 [data-theme="vhs"] .audio-player__progress-bar {
     background: #1a0d2a;
-    border-radius: 0;
-    height: 3px;
+    border-color: #2a1540;
 }
 
-[data-theme="vhs"] .audio-player__title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-}
-
-[data-theme="vhs"] .audio-player__artist {
-    font-family: 'Share Tech Mono', monospace;
-}
-
-[data-theme="vhs"] .audio-player__time {
-    font-family: 'Share Tech Mono', monospace;
+[data-theme="vhs"] .audio-player__counter {
     color: #00e5ff;
-    text-shadow: 0 0 3px rgba(0, 229, 255, 0.4);
+    text-shadow: 0 0 3px rgba(0,229,255,0.4);
+    background: #0a0020;
+    border-color: #1a0050;
 }
 
 [data-theme="vhs"] .audio-player__library-btn {
-    background: rgba(255, 45, 149, 0.06);
+    background: rgba(255, 45, 149, 0.08);
     border: 1px solid #ff2d95 !important;
-    border-radius: 0 !important;
-    box-shadow: 0 0 8px rgba(255, 45, 149, 0.1);
+    color: #ff2d95;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.4), 0 0 6px rgba(255,45,149,0.1);
+}
+
+[data-theme="vhs"] .audio-player__library-btn:hover {
+    background: rgba(255, 45, 149, 0.15);
+    color: #ff69b4;
 }
 
 [data-theme="vhs"] .audio-player__library-label {
-    color: #ff2d95;
-    font-family: 'Share Tech Mono', monospace;
-    text-shadow: 0 0 3px rgba(255, 45, 149, 0.4);
+    color: inherit;
 }
 
-/* Music Library */
+[data-theme="vhs"] .audio-player__tape-window {
+    background: #0a0020;
+    border-color: #2a1540;
+}
+
+[data-theme="vhs"] .audio-player__reel {
+    border-color: #ff2d95;
+}
+
+[data-theme="vhs"] .audio-player__tape-strip {
+    background: #4a0030;
+}
+
+[data-theme="vhs"] .audio-player__vol-label {
+    color: #4a0060;
+}
+
+[data-theme="vhs"] .audio-player__volume-slider::-webkit-slider-thumb {
+    background: #ff2d95;
+    border-color: #ff69b4;
+}
+
+[data-theme="vhs"] .audio-player__btn:hover {
+    color: #00e5ff;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+[data-theme="vhs"] .audio-player__rec-led {
+    color: #4a0030;
+}
+
+[data-theme="vhs"] .audio-player__rec-led--active {
+    color: #ff2d95;
+    text-shadow: 0 0 6px rgba(255,45,149,0.6);
+}
+
+/* Music Library — VHS */
 [data-theme="vhs"] .audio-library {
+    background: rgba(8, 0, 15, 0.98);
     border-top: 1px solid #ff2d95;
+}
+
+[data-theme="vhs"] .audio-library__header {
+    background: rgba(8, 0, 15, 0.98);
+    border-bottom-color: #2a1540;
 }
 
 [data-theme="vhs"] .audio-library__header h3 {
@@ -1165,7 +1277,6 @@
 }
 
 [data-theme="vhs"] .audio-library__category h4 {
-    font-family: 'Share Tech Mono', monospace;
     color: #00e5ff;
 }
 

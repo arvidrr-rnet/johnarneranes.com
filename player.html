@@ -5,905 +5,1151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAR — Spiller</title>
     <link rel="icon" href="images/icon/icon144.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0a;
-            --bg-secondary: #141414;
-            --text: #e8e6e3;
-            --text-muted: #888;
-            --accent: #c9a962;
-            --accent-hover: #d4b66a;
+            --body-bg: #1a1a1a;
+            --chassis: #2a2a2a;
+            --chassis-edge: #3a3a3a;
+            --chrome: #888;
+            --chrome-light: #bbb;
+            --lcd-bg: #0a1a0a;
+            --lcd-text: #33ff66;
+            --lcd-dim: #1a4a2a;
+            --reel-bg: #222;
+            --reel-hub: #444;
+            --tape: #1a0a00;
+            --tape-window: #0d0800;
+            --btn-face: #3a3a3a;
+            --btn-edge: #555;
+            --btn-active: #2a2a2a;
+            --accent: #ff3344;
+            --accent-dim: #661122;
+            --vu-green: #33ff66;
+            --vu-yellow: #ffdd33;
+            --vu-red: #ff3344;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--body-bg);
+            color: #ccc;
             height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
             user-select: none;
-            -webkit-app-region: drag;
         }
 
-        .popout-header {
+        /* ── KASSETTSPILLER CHASSIS ── */
+        .deck {
+            width: 420px;
+            max-width: 96vw;
+            background: var(--chassis);
+            border-radius: 12px;
+            border: 1px solid var(--chassis-edge);
+            box-shadow:
+                0 2px 0 #444,
+                0 4px 0 #333,
+                0 8px 20px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        /* ── TOPPSEKSJON: MERKE ── */
+        .deck__brand {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 11px;
-            color: var(--text-muted);
-            -webkit-app-region: drag;
+            padding: 10px 16px 6px;
         }
 
-        .popout-header__title {
-            font-weight: 600;
-            letter-spacing: 1px;
+        .deck__brand-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--chrome-light);
             text-transform: uppercase;
         }
 
-        .popout-close {
+        .deck__brand-model {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--chrome);
+            text-transform: uppercase;
+        }
+
+        .deck__close {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: var(--chrome);
             cursor: pointer;
-            font-size: 16px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            -webkit-app-region: no-drag;
-            transition: color 0.2s, background 0.2s;
-        }
-
-        .popout-close:hover {
-            color: var(--text);
-            background: rgba(255,255,255,0.1);
-        }
-
-        .popout-player {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            gap: 12px;
-            -webkit-app-region: no-drag;
-        }
-
-        .popout-track {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .popout-cover {
-            width: 56px;
-            height: 56px;
-            border-radius: 6px;
-            object-fit: cover;
-            background: var(--bg-secondary);
-            flex-shrink: 0;
-        }
-
-        .popout-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .popout-title {
             font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
+            padding: 2px 6px;
+            border-radius: 2px;
+            transition: color 0.2s;
+        }
+        .deck__close:hover { color: #fff; }
+
+        /* ── LCD DISPLAY ── */
+        .lcd {
+            margin: 6px 14px;
+            background: var(--lcd-bg);
+            border: 2px solid #111;
+            border-radius: 4px;
+            padding: 8px 12px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+            position: relative;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        .popout-artist {
-            font-size: 12px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .lcd::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.15) 2px,
+                rgba(0,0,0,0.15) 4px
+            );
+            pointer-events: none;
         }
 
-        .popout-progress {
+        .lcd__row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
         }
 
-        .popout-time {
-            font-size: 11px;
-            color: var(--text-muted);
+        .lcd__title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--lcd-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+            text-shadow: 0 0 8px rgba(51,255,102,0.5);
+        }
+
+        .lcd__time {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--lcd-text);
             font-variant-numeric: tabular-nums;
-            min-width: 35px;
+            text-shadow: 0 0 8px rgba(51,255,102,0.5);
         }
 
-        .popout-time--end {
+        .lcd__artist {
+            font-size: 10px;
+            color: var(--lcd-dim);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lcd__status {
+            font-size: 10px;
+            color: var(--lcd-dim);
             text-align: right;
         }
 
-        .popout-progress-bar {
+        .lcd__status.playing {
+            color: var(--lcd-text);
+        }
+
+        /* ── VU METER ── */
+        .vu {
+            display: flex;
+            gap: 3px;
+            margin: 6px 14px;
+            height: 8px;
+        }
+
+        .vu__bar {
             flex: 1;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .popout-progress-bar:hover {
-            height: 6px;
-        }
-
-        .popout-progress-fill {
             height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s linear;
+            background: var(--lcd-dim);
+            border-radius: 1px;
+            transition: background 0.08s;
         }
 
-        .popout-controls {
+        .vu__bar.lit-green { background: var(--vu-green); box-shadow: 0 0 4px rgba(51,255,102,0.4); }
+        .vu__bar.lit-yellow { background: var(--vu-yellow); box-shadow: 0 0 4px rgba(255,221,51,0.4); }
+        .vu__bar.lit-red { background: var(--vu-red); box-shadow: 0 0 4px rgba(255,51,68,0.4); }
+
+        /* ── KASSETTVINDU ── */
+        .cassette-window {
+            margin: 8px 14px;
+            background: var(--tape-window);
+            border: 2px solid #111;
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.9);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-        }
-
-        .popout-btn {
-            background: none;
-            border: none;
-            color: var(--text);
+            gap: 0;
+            position: relative;
             cursor: pointer;
-            font-size: 18px;
-            padding: 6px;
+        }
+
+        /* Tape mellom rullene */
+        .cassette-window__tape {
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            right: 60px;
+            height: 6px;
+            transform: translateY(-50%);
+            background: #1a0800;
+            border-top: 1px solid #2a1a08;
+            border-bottom: 1px solid #0a0400;
+        }
+
+        /* Progress overlay på tapen */
+        .cassette-window__progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(180,120,40,0.25);
+            width: 0%;
+            transition: width 0.2s linear;
+        }
+
+        /* Spoler */
+        .reel {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.2s, background 0.2s;
-            width: 36px;
-            height: 36px;
+            background: var(--reel-bg);
+            border: 2px solid #333;
+            position: relative;
+            z-index: 2;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+            flex-shrink: 0;
         }
 
-        .popout-btn:hover {
-            color: var(--accent);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .popout-btn--play {
-            width: 48px;
-            height: 48px;
-            background: var(--accent);
-            color: var(--bg);
-        }
-
-        .popout-btn--play svg {
+        .reel__hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
             width: 22px;
             height: 22px;
-            fill: var(--bg);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--reel-hub);
+            border: 2px solid #555;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
-        .popout-btn--play:hover {
-            background: var(--accent-hover);
-            color: var(--bg);
+        .reel__spoke {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 28px;
+            background: #333;
+            transform-origin: center top;
         }
 
-        .popout-btn svg {
+        .reel--left .reel__spoke:nth-child(1) { transform: translate(-50%, 0) rotate(0deg); }
+        .reel--left .reel__spoke:nth-child(2) { transform: translate(-50%, 0) rotate(120deg); }
+        .reel--left .reel__spoke:nth-child(3) { transform: translate(-50%, 0) rotate(240deg); }
+        .reel--right .reel__spoke:nth-child(1) { transform: translate(-50%, 0) rotate(0deg); }
+        .reel--right .reel__spoke:nth-child(2) { transform: translate(-50%, 0) rotate(120deg); }
+        .reel--right .reel__spoke:nth-child(3) { transform: translate(-50%, 0) rotate(240deg); }
+
+        /* Animasjon for spinnende spoler */
+        .deck.playing .reel {
+            animation: spin-reel 2s linear infinite;
+        }
+
+        .deck.playing .reel--left {
+            animation-duration: 2.5s;
+        }
+
+        @keyframes spin-reel {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tape-mengde rundt spolene (visuelt) */
+        .reel::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 40%, #1a0a00 41%, #2a1508 100%);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .reel--left::after {
+            width: var(--tape-left, 58px);
+            height: var(--tape-left, 58px);
+        }
+
+        .reel--right::after {
+            width: var(--tape-right, 30px);
+            height: var(--tape-right, 30px);
+        }
+
+        /* Spacer mellom spoler */
+        .cassette-window__spacer {
+            flex: 1;
+        }
+
+        /* Kassett-etikett */
+        .cassette-window__label {
+            position: absolute;
+            bottom: 4px;
+            font-size: 7px;
+            letter-spacing: 2px;
+            color: rgba(180,120,40,0.3);
+            text-transform: uppercase;
+        }
+
+        /* ── TRANSPORT-KNAPPER ── */
+        .transport {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 14px;
+        }
+
+        .transport__btn {
+            background: var(--btn-face);
+            border: 1px solid var(--btn-edge);
+            color: var(--chrome-light);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px 14px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s;
+            box-shadow:
+                0 2px 0 #222,
+                0 3px 4px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+            min-width: 44px;
+        }
+
+        .transport__btn:hover {
+            background: #444;
+            border-color: #666;
+        }
+
+        .transport__btn:active {
+            background: var(--btn-active);
+            box-shadow:
+                0 0 0 #222,
+                0 1px 2px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(0,0,0,0.3);
+            transform: translateY(2px);
+        }
+
+        .transport__btn svg {
             width: 16px;
             height: 16px;
             fill: currentColor;
         }
 
-        .popout-volume {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 4px;
+        .transport__btn--play {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: #fff;
+            padding: 12px 20px;
+            min-width: 56px;
         }
 
-        .popout-volume-slider {
+        .transport__btn--play:hover {
+            background: var(--accent);
+        }
+
+        .transport__btn--play:active {
+            background: #991122;
+        }
+
+        .transport__btn--rec {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            border: 2px solid var(--accent);
+            min-width: 0;
+            padding: 0;
+            margin-left: 8px;
+        }
+
+        .deck.playing .transport__btn--rec {
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(255,51,68,0.5);
+            animation: blink-rec 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink-rec {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ── VOLUME OG EKSTRA ── */
+        .deck__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 14px 12px;
+            gap: 12px;
+        }
+
+        .volume {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .volume__label {
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--chrome);
+            text-transform: uppercase;
+        }
+
+        .volume__slider {
             flex: 1;
             height: 3px;
             -webkit-appearance: none;
             appearance: none;
-            background: rgba(255,255,255,0.1);
+            background: #333;
             border-radius: 2px;
             outline: none;
+            max-width: 120px;
         }
 
-        .popout-volume-slider::-webkit-slider-thumb {
+        .volume__slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: var(--accent);
+            background: var(--chrome);
             cursor: pointer;
+            border: 2px solid #666;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
-        .popout-no-track {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            font-size: 13px;
+        .deck__lib-btn {
+            background: var(--btn-face);
+            border: 1px solid var(--btn-edge);
+            color: var(--chrome);
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            transition: all 0.15s;
+            box-shadow: 0 1px 0 #222;
         }
 
-        /* Sporliste-knapp */
-        .popout-btn--list {
-            position: absolute;
-            right: 16px;
-        }
+        .deck__lib-btn:hover { background: #444; color: #fff; }
+        .deck__lib-btn.active { color: var(--lcd-text); border-color: var(--lcd-text); }
 
-        .popout-btn--list.active {
-            color: var(--accent);
-        }
-
-        .popout-controls {
-            position: relative;
-        }
-
-        /* Bibliotek-panel (album + spor) */
-        .popout-library {
+        /* ── BIBLIOTEK-PANEL ── */
+        .library {
             display: none;
-            flex-direction: column;
-            gap: 0;
-            max-height: 300px;
+            max-height: 220px;
             overflow-y: auto;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 4px 0;
-            margin-top: -4px;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
         }
 
-        .popout-library.open {
-            display: flex;
+        .library.open { display: block; }
+
+        .library::-webkit-scrollbar { width: 4px; }
+        .library::-webkit-scrollbar-track { background: transparent; }
+        .library::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+
+        .library__category {
+            padding: 6px 14px 3px;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--chrome);
+            text-transform: uppercase;
+            border-top: 1px solid #2a2a2a;
         }
 
-        .popout-library::-webkit-scrollbar {
-            width: 4px;
-        }
-        .popout-library::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .popout-library::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.15);
-            border-radius: 2px;
-        }
+        .library__category:first-child { border-top: none; }
 
-        /* Album-header i listen */
-        .popout-library__album {
+        .library__album {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
+            gap: 8px;
+            padding: 6px 14px;
             cursor: pointer;
-            transition: background 0.15s;
             border: none;
             background: none;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 12px;
+            color: #ccc;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
             text-align: left;
             width: 100%;
+            transition: background 0.15s;
         }
 
-        .popout-library__album:hover {
-            background: rgba(255,255,255,0.05);
-        }
+        .library__album:hover { background: rgba(255,255,255,0.04); }
+        .library__album.active { color: var(--lcd-text); }
 
-        .popout-library__album.active {
-            background: rgba(201, 169, 98, 0.08);
-        }
-
-        .popout-library__album-cover {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
+        .library__album-cover {
+            width: 28px;
+            height: 28px;
+            border-radius: 2px;
             object-fit: cover;
-            background: var(--bg);
+            background: #222;
             flex-shrink: 0;
         }
 
-        .popout-library__album-info {
-            flex: 1;
-            min-width: 0;
-        }
+        .library__album-info { flex: 1; min-width: 0; }
 
-        .popout-library__album-title {
-            font-weight: 600;
-            font-size: 12px;
+        .library__album-title {
+            font-size: 11px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .popout-library__album.active .popout-library__album-title {
-            color: var(--accent);
+        .library__album-artist {
+            font-size: 9px;
+            color: var(--chrome);
         }
 
-        .popout-library__album-artist {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .popout-library__album-arrow {
-            color: var(--text-muted);
-            font-size: 10px;
+        .library__album-arrow {
+            color: var(--chrome);
+            font-size: 8px;
             transition: transform 0.2s;
             flex-shrink: 0;
         }
 
-        .popout-library__album.expanded .popout-library__album-arrow {
+        .library__album.expanded .library__album-arrow {
             transform: rotate(90deg);
         }
 
-        /* Sporliste under album */
-        .popout-library__tracks {
+        .library__tracks {
             display: none;
             flex-direction: column;
-            padding-left: 16px;
-            background: rgba(0,0,0,0.2);
+            padding-left: 12px;
+            background: rgba(0,0,0,0.3);
         }
 
-        .popout-library__tracks.open {
-            display: flex;
-        }
+        .library__tracks.open { display: flex; }
 
-        .popout-library__track {
+        .library__track {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
+            gap: 6px;
+            padding: 4px 14px;
             cursor: pointer;
-            transition: background 0.15s;
             border: none;
             background: none;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 11px;
+            color: #aaa;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
             text-align: left;
             width: 100%;
+            transition: background 0.15s;
         }
 
-        .popout-library__track:hover {
-            background: rgba(255,255,255,0.05);
-        }
+        .library__track:hover { background: rgba(255,255,255,0.04); }
+        .library__track.playing { color: var(--lcd-text); }
 
-        .popout-library__track.playing {
-            color: var(--accent);
-        }
-
-        .popout-library__track-num {
-            color: var(--text-muted);
-            font-size: 10px;
-            min-width: 16px;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .popout-library__track.playing .popout-library__track-num {
-            color: var(--accent);
-        }
-
-        .popout-library__track-name {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .popout-library__track-dur {
-            color: var(--text-muted);
-            font-size: 10px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* Kategori-separator */
-        .popout-library__category {
-            padding: 8px 12px 4px;
+        .library__track-num {
+            color: var(--chrome);
             font-size: 9px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            border-top: 1px solid rgba(255,255,255,0.05);
+            min-width: 14px;
+            text-align: right;
         }
 
-        .popout-library__category:first-child {
-            border-top: none;
+        .library__track.playing .library__track-num { color: var(--lcd-text); }
+        .library__track-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .library__track-dur { color: var(--chrome); font-size: 9px; }
+
+        /* ── COUNTER (tapeteller) ── */
+        .counter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            color: var(--chrome);
+            letter-spacing: 2px;
+            display: flex;
+            gap: 12px;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.15); opacity: 0.7; }
+        .counter span { color: var(--chrome-light); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 440px) {
+            .deck { border-radius: 0; }
+            .reel { width: 50px; height: 50px; }
+            .reel__hub { width: 18px; height: 18px; }
+            .reel__spoke { height: 22px; }
+            .reel--left::after { width: var(--tape-left, 44px); height: var(--tape-left, 44px); }
+            .reel--right::after { width: var(--tape-right, 24px); height: var(--tape-right, 24px); }
+            .cassette-window__tape { left: 45px; right: 45px; }
         }
     </style>
 </head>
 <body>
-    <div class="popout-header">
-        <span class="popout-header__title">JAR Spiller</span>
-        <button class="popout-close" id="close-btn" title="Lukk">✕</button>
+
+<div class="deck" id="deck">
+
+    <!-- Merke -->
+    <div class="deck__brand">
+        <div>
+            <div class="deck__brand-name">JAR</div>
+            <div class="deck__brand-model">Stereo Cassette Deck</div>
+        </div>
+        <button class="deck__close" id="close-btn" title="Lukk">✕</button>
     </div>
 
-    <div class="popout-player" id="player">
-        <div class="popout-track">
-            <img class="popout-cover" id="cover" src="images/icon/record.svg" alt="Plate-ikon">
-            <div class="popout-info">
-                <div class="popout-title" id="title">Ingen spor valgt</div>
-                <div class="popout-artist" id="artist"></div>
-            </div>
+    <!-- LCD Display -->
+    <div class="lcd">
+        <div class="lcd__row">
+            <div class="lcd__title" id="title">INGEN KASSETT</div>
+            <div class="lcd__time" id="current-time">0:00</div>
         </div>
-
-        <div class="popout-progress">
-            <span class="popout-time" id="current-time">0:00</span>
-            <div class="popout-progress-bar" id="progress-bar">
-                <div class="popout-progress-fill" id="progress-fill"></div>
-            </div>
-            <span class="popout-time popout-time--end" id="duration">0:00</span>
-        </div>
-
-        <div class="popout-controls">
-            <button class="popout-btn" id="prev-btn" title="Forrige">
-                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-            </button>
-            <button class="popout-btn popout-btn--play" id="play-btn" title="Spill/Pause">
-                <svg viewBox="0 0 24 24" class="icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg viewBox="0 0 24 24" class="icon-pause" style="display:none"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
-            </button>
-            <button class="popout-btn" id="next-btn" title="Neste">
-                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm10-12v12h2V6z"/></svg>
-            </button>
-            <button class="popout-btn popout-btn--list" id="list-btn" title="Bibliotek">
-                <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
-            </button>
-        </div>
-
-        <div class="popout-library" id="library-panel"></div>
-
-        <div class="popout-volume">
-            <svg style="width:16px;height:16px;fill:var(--text-muted);flex-shrink:0" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            <input type="range" class="popout-volume-slider" id="volume-slider" min="0" max="1" step="0.01" value="0.7">
+        <div class="lcd__row">
+            <div class="lcd__artist" id="artist">Sett inn kassett...</div>
+            <div class="lcd__status" id="status">STOP</div>
         </div>
     </div>
 
-    <script>
-    /**
-     * Pop-out Mini Player
-     * Selvstendig lydspiller som kommuniserer med hovedvinduet via BroadcastChannel
-     */
-    const AUDIO_BASE_URL = 'https://johnarneranes.com/';
+    <!-- VU Meter -->
+    <div class="vu" id="vu-meter">
+        <div class="vu__bar"></div><div class="vu__bar"></div><div class="vu__bar"></div>
+        <div class="vu__bar"></div><div class="vu__bar"></div><div class="vu__bar"></div>
+        <div class="vu__bar"></div><div class="vu__bar"></div><div class="vu__bar"></div>
+        <div class="vu__bar"></div><div class="vu__bar"></div><div class="vu__bar"></div>
+        <div class="vu__bar"></div><div class="vu__bar"></div><div class="vu__bar"></div>
+        <div class="vu__bar"></div><div class="vu__bar"></div><div class="vu__bar"></div>
+        <div class="vu__bar"></div><div class="vu__bar"></div>
+    </div>
 
-    class PopOutPlayer {
-        constructor() {
-            this.audio = new Audio();
-            this.channel = new BroadcastChannel('jar-player');
-            this.currentPlaylist = [];
-            this.currentIndex = 0;
-            this.currentAlbum = null;
+    <!-- Kassettvindu med spoler -->
+    <div class="cassette-window" id="cassette-window">
+        <div class="cassette-window__tape">
+            <div class="cassette-window__progress" id="progress-fill"></div>
+        </div>
+        <div class="reel reel--left" id="reel-left">
+            <div class="reel__spoke"></div>
+            <div class="reel__spoke"></div>
+            <div class="reel__spoke"></div>
+            <div class="reel__hub"></div>
+        </div>
+        <div class="cassette-window__spacer"></div>
+        <div class="reel reel--right" id="reel-right">
+            <div class="reel__spoke"></div>
+            <div class="reel__spoke"></div>
+            <div class="reel__spoke"></div>
+            <div class="reel__hub"></div>
+        </div>
+        <span class="cassette-window__label">C-90 · Chrome</span>
+    </div>
+
+    <!-- Transport-knapper -->
+    <div class="transport">
+        <button class="transport__btn" id="prev-btn" title="Forrige (⏮)">
+            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="transport__btn transport__btn--play" id="play-btn" title="Spill / Pause">
+            <svg viewBox="0 0 24 24" class="icon-play"><path d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" class="icon-pause" style="display:none"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
+        </button>
+        <button class="transport__btn" id="stop-btn" title="Stopp (■)">
+            <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"/></svg>
+        </button>
+        <button class="transport__btn" id="next-btn" title="Neste (⏭)">
+            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm10-12v12h2V6z"/></svg>
+        </button>
+        <div class="transport__btn--rec" id="rec-led"></div>
+    </div>
+
+    <!-- Volum og bibliotek -->
+    <div class="deck__footer">
+        <div class="volume">
+            <span class="volume__label">Vol</span>
+            <input type="range" class="volume__slider" id="volume-slider" min="0" max="1" step="0.01" value="0.7">
+        </div>
+        <div class="counter">
+            <span id="duration">0:00</span>
+        </div>
+        <button class="deck__lib-btn" id="list-btn">Kassetter</button>
+    </div>
+
+    <!-- Bibliotek -->
+    <div class="library" id="library-panel"></div>
+
+</div>
+
+<script>
+/**
+ * Retro Cassette Deck Player
+ * Pop-out spiller med kassettspiller-estetikk
+ */
+const AUDIO_BASE_URL = 'https://johnarneranes.com/';
+
+class CassetteDeck {
+    constructor() {
+        this.audio = new Audio();
+        this.channel = new BroadcastChannel('jar-player');
+        this.currentPlaylist = [];
+        this.currentIndex = 0;
+        this.currentAlbum = null;
+        this.isPlaying = false;
+        this.library = null;
+        this.pendingSeek = null;
+        this.shouldAutoPlay = false;
+        this.ready = false;
+        this.analyser = null;
+        this.audioCtx = null;
+
+        this.cacheElements();
+        this.bindEvents();
+        this.startup();
+    }
+
+    cacheElements() {
+        this.deck = document.getElementById('deck');
+        this.titleEl = document.getElementById('title');
+        this.artistEl = document.getElementById('artist');
+        this.statusEl = document.getElementById('status');
+        this.playBtn = document.getElementById('play-btn');
+        this.prevBtn = document.getElementById('prev-btn');
+        this.nextBtn = document.getElementById('next-btn');
+        this.stopBtn = document.getElementById('stop-btn');
+        this.progressFill = document.getElementById('progress-fill');
+        this.currentTimeEl = document.getElementById('current-time');
+        this.durationEl = document.getElementById('duration');
+        this.volumeSlider = document.getElementById('volume-slider');
+        this.closeBtn = document.getElementById('close-btn');
+        this.listBtn = document.getElementById('list-btn');
+        this.libraryPanel = document.getElementById('library-panel');
+        this.reelLeft = document.getElementById('reel-left');
+        this.reelRight = document.getElementById('reel-right');
+        this.cassetteWindow = document.getElementById('cassette-window');
+        this.vuMeter = document.getElementById('vu-meter');
+        this.vuBars = this.vuMeter.querySelectorAll('.vu__bar');
+    }
+
+    bindEvents() {
+        this.playBtn.addEventListener('click', () => this.togglePlay());
+        this.prevBtn.addEventListener('click', () => this.previousTrack());
+        this.nextBtn.addEventListener('click', () => this.nextTrack());
+        this.stopBtn.addEventListener('click', () => this.stop());
+        this.closeBtn.addEventListener('click', () => this.close());
+        this.listBtn.addEventListener('click', () => this.toggleLibrary());
+
+        this.cassetteWindow.addEventListener('click', (e) => {
+            if (!this.audio.duration) return;
+            var rect = this.cassetteWindow.getBoundingClientRect();
+            var percent = (e.clientX - rect.left) / rect.width;
+            this.audio.currentTime = percent * this.audio.duration;
+        });
+
+        this.volumeSlider.addEventListener('input', (e) => {
+            this.audio.volume = parseFloat(e.target.value);
+        });
+
+        this.audio.addEventListener('timeupdate', () => this.updateProgress());
+        this.audio.addEventListener('loadedmetadata', () => {
+            this.updateDuration();
+            if (this.pendingSeek !== null) {
+                this.audio.currentTime = this.pendingSeek;
+                this.pendingSeek = null;
+            }
+            if (this.shouldAutoPlay) {
+                this.shouldAutoPlay = false;
+                this.play();
+            }
+        });
+        this.audio.addEventListener('ended', () => this.handleTrackEnd());
+        this.audio.addEventListener('play', () => {
+            this.isPlaying = true;
+            this.deck.classList.add('playing');
+            this.playBtn.querySelector('.icon-play').style.display = 'none';
+            this.playBtn.querySelector('.icon-pause').style.display = '';
+            this.statusEl.textContent = '▶ PLAY';
+            this.statusEl.classList.add('playing');
+            this.startVU();
+        });
+        this.audio.addEventListener('pause', () => {
             this.isPlaying = false;
-            this.library = null;
-            this.pendingSeek = null;
-            this.shouldAutoPlay = false;
-            this.ready = false;
+            this.deck.classList.remove('playing');
+            this.playBtn.querySelector('.icon-play').style.display = '';
+            this.playBtn.querySelector('.icon-pause').style.display = 'none';
+            this.statusEl.textContent = 'PAUSE';
+            this.statusEl.classList.remove('playing');
+            this.stopVU();
+        });
+        this.audio.addEventListener('error', (e) => {
+            console.error('Audio feil:', this.audio.error?.message);
+        });
 
-            this.cacheElements();
-            this.bindEvents();
-            this.startup();
-        }
+        this.channel.onmessage = (e) => this.handleMessage(e);
 
-        cacheElements() {
-            this.coverEl = document.getElementById('cover');
-            this.titleEl = document.getElementById('title');
-            this.artistEl = document.getElementById('artist');
-            this.playBtn = document.getElementById('play-btn');
-            this.prevBtn = document.getElementById('prev-btn');
-            this.nextBtn = document.getElementById('next-btn');
-            this.progressBar = document.getElementById('progress-bar');
-            this.progressFill = document.getElementById('progress-fill');
-            this.currentTimeEl = document.getElementById('current-time');
-            this.durationEl = document.getElementById('duration');
-            this.volumeSlider = document.getElementById('volume-slider');
-            this.closeBtn = document.getElementById('close-btn');
-            this.listBtn = document.getElementById('list-btn');
-            this.libraryPanel = document.getElementById('library-panel');
-        }
+        window.addEventListener('beforeunload', () => {
+            this.saveState();
+            this.channel.postMessage({ type: 'popout-closed', data: this.getState() });
+        });
 
-        bindEvents() {
-            this.playBtn.addEventListener('click', () => this.togglePlay());
-            this.prevBtn.addEventListener('click', () => this.previousTrack());
-            this.nextBtn.addEventListener('click', () => this.nextTrack());
-            this.closeBtn.addEventListener('click', () => this.close());
-            this.listBtn.addEventListener('click', () => this.toggleLibrary());
-
-            this.progressBar.addEventListener('click', (e) => {
-                if (!this.audio.duration) return;
-                const rect = this.progressBar.getBoundingClientRect();
-                const percent = (e.clientX - rect.left) / rect.width;
-                this.audio.currentTime = percent * this.audio.duration;
-            });
-
-            this.volumeSlider.addEventListener('input', (e) => {
-                this.audio.volume = parseFloat(e.target.value);
-            });
-
-            this.audio.addEventListener('timeupdate', () => this.updateProgress());
-            this.audio.addEventListener('loadedmetadata', () => {
-                this.updateDuration();
-                // Sett currentTime etter at metadata er lastet
-                if (this.pendingSeek !== null) {
-                    this.audio.currentTime = this.pendingSeek;
-                    this.pendingSeek = null;
-                }
-                // Autoplay etter metadata er klar
-                if (this.shouldAutoPlay) {
-                    this.shouldAutoPlay = false;
-                    this.play();
-                }
-            });
-            this.audio.addEventListener('ended', () => this.handleTrackEnd());
-            this.audio.addEventListener('play', () => {
-                this.isPlaying = true;
-                this.playBtn.querySelector('.icon-play').style.display = 'none';
-                this.playBtn.querySelector('.icon-pause').style.display = '';
-            });
-            this.audio.addEventListener('pause', () => {
-                this.isPlaying = false;
-                this.playBtn.querySelector('.icon-play').style.display = '';
-                this.playBtn.querySelector('.icon-pause').style.display = 'none';
-            });
-            this.audio.addEventListener('error', (e) => {
-                console.error('Audio feil:', this.audio.error?.message, 'src:', this.audio.src);
-            });
-
-            // Meldinger fra hovedvinduet
-            this.channel.onmessage = (e) => this.handleMessage(e);
-
-            // Lagre tilstand ved lukking
-            window.addEventListener('beforeunload', () => {
-                this.saveState();
-                this.channel.postMessage({
-                    type: 'popout-closed',
-                    data: this.getState()
-                });
-            });
-
-            // Tastaturkontroller
-            document.addEventListener('keydown', (e) => {
-                switch (e.code) {
-                    case 'Space':
-                        e.preventDefault();
-                        this.togglePlay();
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        this.audio.currentTime = Math.max(0, this.audio.currentTime - 10);
-                        break;
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        this.audio.currentTime = Math.min(this.audio.duration || 0, this.audio.currentTime + 10);
-                        break;
-                }
-            });
-        }
-
-        handleMessage(event) {
-            const { type, data } = event.data;
-            switch (type) {
-                case 'sync-state':
-                    console.log('Mottok sync-state fra hovedvindu:', data);
-                    this.restoreState(data);
+        document.addEventListener('keydown', (e) => {
+            switch (e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    this.togglePlay();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.audio.currentTime = Math.max(0, this.audio.currentTime - 10);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.audio.currentTime = Math.min(this.audio.duration || 0, this.audio.currentTime + 10);
                     break;
             }
-        }
+        });
+    }
 
-        async startup() {
-            // Last musikkbibliotek først
-            try {
-                const resp = await fetch('data/music-library.json');
-                const lib = await resp.json();
-                this.library = lib;
-            } catch (e) {
-                console.warn('Kunne ikke laste musikkbibliotek:', e);
-            }
-
-            // Les tilstand fra localStorage
-            const stateStr = localStorage.getItem('jar_playerState');
-            if (stateStr) {
-                try {
-                    const state = JSON.parse(stateStr);
-                    if (state && state.albumId) {
-                        this.restoreState(state);
-                    }
-                } catch (e) {
-                    console.warn('Kunne ikke gjenopprette tilstand:', e);
-                }
-            }
-
-            this.ready = true;
-            console.log('Pop-out klar, sender popout-ready');
-            // Fortell hovedvinduet at pop-out er klart
-            this.channel.postMessage({ type: 'popout-ready' });
-        }
-
-        restoreState(state) {
-            if (!state) return;
-            console.log('Gjenoppretter tilstand:', state.albumId, 'spor:', state.trackIndex);
-
-            if (state.library) {
-                this.library = state.library;
-            }
-
-            // Finn album
-            if (state.albumId) {
-                if (this.library?.albums) {
-                    this.currentAlbum = this.library.albums.find(a => a.id === state.albumId);
-                }
-            }
-
-            // Sett playlist
-            if (state.playlist && state.playlist.length > 0) {
-                this.currentPlaylist = state.playlist;
-            } else if (this.currentAlbum) {
-                this.currentPlaylist = this.currentAlbum.tracks.map(t => ({
-                    ...t,
-                    artist: this.currentAlbum.artist,
-                    albumId: this.currentAlbum.id
-                }));
-            }
-
-            this.currentIndex = state.trackIndex || 0;
-
-            if (this.currentPlaylist[this.currentIndex]) {
-                // Sett opp seek og autoplay FØR loadTrack
-                if (state.currentTime && state.currentTime > 0) {
-                    this.pendingSeek = state.currentTime;
-                }
-                if (state.isPlaying) {
-                    this.shouldAutoPlay = true;
-                }
-
-                this.loadTrack(this.currentPlaylist[this.currentIndex]);
-            }
-
-            if (state.volume !== undefined) {
-                this.audio.volume = state.volume;
-                this.volumeSlider.value = state.volume;
-            }
-        }
-
-        loadTrack(track) {
-            if (!track) return;
-
-            const src = track.src.startsWith('http') ? track.src : AUDIO_BASE_URL + track.src;
-            console.log('Laster spor:', track.title, 'fra:', src);
-            this.audio.src = src;
-            this.audio.load();
-
-            this.titleEl.textContent = track.title || 'Ukjent spor';
-            this.artistEl.textContent = track.artist || '';
-
-            // Albumcover
-            if (this.currentAlbum?.cover) {
-                this.coverEl.src = this.currentAlbum.cover;
-                this.coverEl.onerror = () => {
-                    this.coverEl.src = 'images/icon/record.svg';
-                };
-            } else {
-                this.coverEl.src = 'images/icon/record.svg';
-            }
-
-            document.title = `${track.title} — JAR`;
-            this.updateLibraryHighlight();
-        }
-
-        toggleLibrary() {
-            const isOpen = this.libraryPanel.classList.toggle('open');
-            this.listBtn.classList.toggle('active', isOpen);
-            if (isOpen) {
-                this.renderLibrary();
-            }
-        }
-
-        renderLibrary() {
-            if (!this.library?.albums?.length) {
-                this.libraryPanel.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:12px;text-align:center">Ingen album tilgjengelig</div>';
-                return;
-            }
-
-            // Grupper album etter kategori
-            const categories = {};
-            this.library.albums.forEach(album => {
-                const cat = album.category || 'Annet';
-                if (!categories[cat]) categories[cat] = [];
-                categories[cat].push(album);
-            });
-
-            let html = '';
-            for (const [cat, albums] of Object.entries(categories)) {
-                html += `<div class="popout-library__category">${cat}</div>`;
-                albums.forEach(album => {
-                    const isActive = this.currentAlbum?.id === album.id;
-                    const isExpanded = isActive;
-                    html += `<button class="popout-library__album${isActive ? ' active' : ''}${isExpanded ? ' expanded' : ''}" data-album-id="${album.id}">
-                        <img class="popout-library__album-cover" src="${album.cover}" onerror="this.src='images/icon/record.svg'" alt="Albumcover">
-                        <div class="popout-library__album-info">
-                            <div class="popout-library__album-title">${album.title}</div>
-                            <div class="popout-library__album-artist">${album.artist} · ${album.year || ''}</div>
-                        </div>
-                        <span class="popout-library__album-arrow">▶</span>
-                    </button>`;
-                    html += `<div class="popout-library__tracks${isExpanded ? ' open' : ''}" data-tracks-for="${album.id}">`;
-                    album.tracks.forEach((track, i) => {
-                        const isPlaying = isActive && i === this.currentIndex;
-                        const num = String(i + 1).padStart(2, '0');
-                        html += `<button class="popout-library__track${isPlaying ? ' playing' : ''}" data-album-id="${album.id}" data-track-index="${i}">
-                            <span class="popout-library__track-num">${isPlaying ? '♪' : num}</span>
-                            <span class="popout-library__track-name">${track.title}</span>
-                            <span class="popout-library__track-dur">${track.duration || ''}</span>
-                        </button>`;
-                    });
-                    html += '</div>';
-                });
-            }
-
-            this.libraryPanel.innerHTML = html;
-
-            // Bind album-klikk (vis/skjul spor)
-            this.libraryPanel.querySelectorAll('.popout-library__album').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const albumId = btn.dataset.albumId;
-                    const tracksDiv = this.libraryPanel.querySelector(`[data-tracks-for="${albumId}"]`);
-                    const wasExpanded = btn.classList.contains('expanded');
-
-                    // Lukk alle andre
-                    this.libraryPanel.querySelectorAll('.popout-library__album.expanded').forEach(el => el.classList.remove('expanded'));
-                    this.libraryPanel.querySelectorAll('.popout-library__tracks.open').forEach(el => el.classList.remove('open'));
-
-                    if (!wasExpanded) {
-                        btn.classList.add('expanded');
-                        tracksDiv.classList.add('open');
-                    }
-                });
-            });
-
-            // Bind spor-klikk
-            this.libraryPanel.querySelectorAll('.popout-library__track').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const albumId = btn.dataset.albumId;
-                    const trackIdx = parseInt(btn.dataset.trackIndex);
-                    this.selectAlbumTrack(albumId, trackIdx);
-                });
-            });
-
-            // Scroll aktivt album synlig
-            const activeAlbum = this.libraryPanel.querySelector('.popout-library__album.active');
-            if (activeAlbum) activeAlbum.scrollIntoView({ block: 'nearest' });
-        }
-
-        selectAlbumTrack(albumId, trackIndex) {
-            const album = this.library.albums.find(a => a.id === albumId);
-            if (!album) return;
-
-            this.currentAlbum = album;
-            this.currentPlaylist = album.tracks.map(t => ({
-                ...t,
-                artist: album.artist,
-                albumId: album.id
-            }));
-            this.currentIndex = trackIndex;
-            this.loadTrack(this.currentPlaylist[this.currentIndex]);
-            this.play();
-        }
-
-        updateLibraryHighlight() {
-            if (!this.libraryPanel.classList.contains('open')) return;
-            // Re-render for å oppdatere highlight
-            this.renderLibrary();
-        }
-
-        play() {
-            const p = this.audio.play();
-            if (p) {
-                p.catch(err => {
-                    console.warn('Autoplay blokkert:', err.message);
-                    // Vis visuell hint om at brukeren må trykke play
-                    this.playBtn.style.animation = 'pulse 1s ease-in-out 3';
-                });
-            }
-        }
-
-        pause() {
-            this.audio.pause();
-        }
-
-        togglePlay() {
-            this.playBtn.style.animation = '';
-            if (this.isPlaying) {
-                this.pause();
-            } else {
-                this.play();
-            }
-        }
-
-        previousTrack() {
-            if (this.audio.currentTime > 3) {
-                this.audio.currentTime = 0;
-                return;
-            }
-            if (this.currentIndex > 0) {
-                this.currentIndex--;
-                this.loadTrack(this.currentPlaylist[this.currentIndex]);
-                this.play();
-            }
-        }
-
-        nextTrack() {
-            if (this.currentIndex < this.currentPlaylist.length - 1) {
-                this.currentIndex++;
-                this.loadTrack(this.currentPlaylist[this.currentIndex]);
-                this.play();
-            }
-        }
-
-        handleTrackEnd() {
-            this.nextTrack();
-        }
-
-        updateProgress() {
-            if (!this.audio.duration) return;
-            const percent = (this.audio.currentTime / this.audio.duration) * 100;
-            this.progressFill.style.width = `${percent}%`;
-            this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime);
-        }
-
-        updateDuration() {
-            this.durationEl.textContent = this.formatTime(this.audio.duration);
-        }
-
-        formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        getState() {
-            return {
-                albumId: this.currentAlbum?.id,
-                trackIndex: this.currentIndex,
-                currentTime: this.audio.currentTime,
-                isPlaying: this.isPlaying,
-                volume: this.audio.volume,
-                playlist: this.currentPlaylist,
-                timestamp: Date.now()
-            };
-        }
-
-        saveState() {
-            const state = this.getState();
-            localStorage.setItem('jar_playerState', JSON.stringify(state));
-        }
-
-        close() {
-            this.saveState();
-            this.channel.postMessage({
-                type: 'popout-closed',
-                data: this.getState()
-            });
-            window.close();
+    /* ── VU Meter med Web Audio API ── */
+    initAudioContext() {
+        if (this.audioCtx) return;
+        try {
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            var source = this.audioCtx.createMediaElementSource(this.audio);
+            this.analyser = this.audioCtx.createAnalyser();
+            this.analyser.fftSize = 64;
+            source.connect(this.analyser);
+            this.analyser.connect(this.audioCtx.destination);
+        } catch (e) {
+            console.warn('Web Audio API ikke tilgjengelig:', e);
         }
     }
 
-    // Start pop-out spiller
-    new PopOutPlayer();
-    </script>
+    startVU() {
+        this.initAudioContext();
+        if (!this.analyser) {
+            // Fallback: simuler VU uten Web Audio
+            this._vuInterval = setInterval(() => this.fakeVU(), 80);
+            return;
+        }
+        this._vuFrame = requestAnimationFrame(() => this.drawVU());
+    }
+
+    stopVU() {
+        if (this._vuInterval) clearInterval(this._vuInterval);
+        if (this._vuFrame) cancelAnimationFrame(this._vuFrame);
+        this.vuBars.forEach(bar => bar.className = 'vu__bar');
+    }
+
+    drawVU() {
+        if (!this.isPlaying) return;
+        var data = new Uint8Array(this.analyser.frequencyBinCount);
+        this.analyser.getByteFrequencyData(data);
+
+        // Gjennomsnittlig nivå
+        var sum = 0;
+        for (var i = 0; i < data.length; i++) sum += data[i];
+        var avg = sum / data.length;
+        var level = Math.floor((avg / 255) * this.vuBars.length);
+
+        this.vuBars.forEach((bar, idx) => {
+            bar.className = 'vu__bar';
+            if (idx < level) {
+                if (idx < 12) bar.classList.add('lit-green');
+                else if (idx < 16) bar.classList.add('lit-yellow');
+                else bar.classList.add('lit-red');
+            }
+        });
+
+        this._vuFrame = requestAnimationFrame(() => this.drawVU());
+    }
+
+    fakeVU() {
+        if (!this.isPlaying) return;
+        var base = 6 + Math.floor(Math.random() * 8);
+        this.vuBars.forEach((bar, idx) => {
+            bar.className = 'vu__bar';
+            if (idx < base) {
+                if (idx < 12) bar.classList.add('lit-green');
+                else if (idx < 16) bar.classList.add('lit-yellow');
+                else bar.classList.add('lit-red');
+            }
+        });
+    }
+
+    /* ── Spillkontroll ── */
+    handleMessage(event) {
+        var msg = event.data;
+        if (msg.type === 'sync-state') this.restoreState(msg.data);
+    }
+
+    async startup() {
+        try {
+            var resp = await fetch('data/music-library.json');
+            this.library = await resp.json();
+        } catch (e) {
+            console.warn('Kunne ikke laste musikkbibliotek:', e);
+        }
+
+        var stateStr = localStorage.getItem('jar_playerState');
+        if (stateStr) {
+            try {
+                var state = JSON.parse(stateStr);
+                if (state && state.albumId) this.restoreState(state);
+            } catch (e) { /* ignore */ }
+        }
+
+        this.ready = true;
+        this.channel.postMessage({ type: 'popout-ready' });
+    }
+
+    restoreState(state) {
+        if (!state) return;
+        if (state.library) this.library = state.library;
+
+        if (state.albumId && this.library?.albums) {
+            this.currentAlbum = this.library.albums.find(a => a.id === state.albumId);
+        }
+
+        if (state.playlist && state.playlist.length > 0) {
+            this.currentPlaylist = state.playlist;
+        } else if (this.currentAlbum) {
+            this.currentPlaylist = this.currentAlbum.tracks.map(t => ({
+                ...t, artist: this.currentAlbum.artist, albumId: this.currentAlbum.id
+            }));
+        }
+
+        this.currentIndex = state.trackIndex || 0;
+
+        if (this.currentPlaylist[this.currentIndex]) {
+            if (state.currentTime && state.currentTime > 0) this.pendingSeek = state.currentTime;
+            if (state.isPlaying) this.shouldAutoPlay = true;
+            this.loadTrack(this.currentPlaylist[this.currentIndex]);
+        }
+
+        if (state.volume !== undefined) {
+            this.audio.volume = state.volume;
+            this.volumeSlider.value = state.volume;
+        }
+    }
+
+    loadTrack(track) {
+        if (!track) return;
+        var src = track.src.startsWith('http') ? track.src : AUDIO_BASE_URL + track.src;
+        this.audio.src = src;
+        this.audio.load();
+
+        this.titleEl.textContent = (track.title || 'Ukjent spor').toUpperCase();
+        this.artistEl.textContent = track.artist || '';
+        document.title = track.title + ' — JAR Deck';
+        this.updateLibraryHighlight();
+    }
+
+    play() {
+        var p = this.audio.play();
+        if (p) p.catch(function () {});
+    }
+
+    pause() {
+        this.audio.pause();
+    }
+
+    stop() {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.statusEl.textContent = 'STOP';
+        this.statusEl.classList.remove('playing');
+        this.deck.classList.remove('playing');
+        this.stopVU();
+    }
+
+    togglePlay() {
+        if (this.isPlaying) this.pause();
+        else this.play();
+    }
+
+    previousTrack() {
+        if (this.audio.currentTime > 3) { this.audio.currentTime = 0; return; }
+        if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.loadTrack(this.currentPlaylist[this.currentIndex]);
+            this.play();
+        }
+    }
+
+    nextTrack() {
+        if (this.currentIndex < this.currentPlaylist.length - 1) {
+            this.currentIndex++;
+            this.loadTrack(this.currentPlaylist[this.currentIndex]);
+            this.play();
+        }
+    }
+
+    handleTrackEnd() { this.nextTrack(); }
+
+    updateProgress() {
+        if (!this.audio.duration) return;
+        var percent = (this.audio.currentTime / this.audio.duration) * 100;
+        this.progressFill.style.width = percent + '%';
+        this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime);
+
+        // Oppdater tape-mengde visuelt på spolene
+        var p = percent / 100;
+        var leftSize = 58 - (p * 28);
+        var rightSize = 30 + (p * 28);
+        this.reelLeft.style.setProperty('--tape-left', leftSize + 'px');
+        this.reelRight.style.setProperty('--tape-right', rightSize + 'px');
+    }
+
+    updateDuration() {
+        this.durationEl.textContent = this.formatTime(this.audio.duration);
+    }
+
+    formatTime(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        var mins = Math.floor(seconds / 60);
+        var secs = Math.floor(seconds % 60);
+        return mins + ':' + secs.toString().padStart(2, '0');
+    }
+
+    /* ── Bibliotek ── */
+    toggleLibrary() {
+        var isOpen = this.libraryPanel.classList.toggle('open');
+        this.listBtn.classList.toggle('active', isOpen);
+        if (isOpen) this.renderLibrary();
+    }
+
+    renderLibrary() {
+        if (!this.library?.albums?.length) {
+            this.libraryPanel.innerHTML = '<div style="padding:16px;color:#666;font-size:11px;text-align:center">Ingen kassetter tilgjengelig</div>';
+            return;
+        }
+
+        var categories = {};
+        this.library.albums.forEach(function (album) {
+            var cat = album.category || 'Annet';
+            if (!categories[cat]) categories[cat] = [];
+            categories[cat].push(album);
+        });
+
+        var self = this;
+        var html = '';
+        for (var cat in categories) {
+            html += '<div class="library__category">' + cat + '</div>';
+            categories[cat].forEach(function (album) {
+                var isActive = self.currentAlbum?.id === album.id;
+                var isExpanded = isActive;
+                html += '<button class="library__album' + (isActive ? ' active' : '') + (isExpanded ? ' expanded' : '') + '" data-album-id="' + album.id + '">' +
+                    '<img class="library__album-cover" src="' + album.cover + '" onerror="this.src=\'images/icon/record.svg\'" alt="">' +
+                    '<div class="library__album-info">' +
+                        '<div class="library__album-title">' + album.title + '</div>' +
+                        '<div class="library__album-artist">' + album.artist + '</div>' +
+                    '</div>' +
+                    '<span class="library__album-arrow">▶</span>' +
+                '</button>';
+                html += '<div class="library__tracks' + (isExpanded ? ' open' : '') + '" data-tracks-for="' + album.id + '">';
+                album.tracks.forEach(function (track, i) {
+                    var isPlaying = isActive && i === self.currentIndex;
+                    var num = String(i + 1).padStart(2, '0');
+                    html += '<button class="library__track' + (isPlaying ? ' playing' : '') + '" data-album-id="' + album.id + '" data-track-index="' + i + '">' +
+                        '<span class="library__track-num">' + (isPlaying ? '♪' : num) + '</span>' +
+                        '<span class="library__track-name">' + track.title + '</span>' +
+                        '<span class="library__track-dur">' + (track.duration || '') + '</span>' +
+                    '</button>';
+                });
+                html += '</div>';
+            });
+        }
+
+        this.libraryPanel.innerHTML = html;
+
+        this.libraryPanel.querySelectorAll('.library__album').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var albumId = btn.dataset.albumId;
+                var tracksDiv = self.libraryPanel.querySelector('[data-tracks-for="' + albumId + '"]');
+                var wasExpanded = btn.classList.contains('expanded');
+
+                self.libraryPanel.querySelectorAll('.library__album.expanded').forEach(function (el) { el.classList.remove('expanded'); });
+                self.libraryPanel.querySelectorAll('.library__tracks.open').forEach(function (el) { el.classList.remove('open'); });
+
+                if (!wasExpanded) {
+                    btn.classList.add('expanded');
+                    tracksDiv.classList.add('open');
+                }
+            });
+        });
+
+        this.libraryPanel.querySelectorAll('.library__track').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                self.selectAlbumTrack(btn.dataset.albumId, parseInt(btn.dataset.trackIndex));
+            });
+        });
+    }
+
+    selectAlbumTrack(albumId, trackIndex) {
+        var album = this.library.albums.find(function (a) { return a.id === albumId; });
+        if (!album) return;
+        this.currentAlbum = album;
+        this.currentPlaylist = album.tracks.map(function (t) {
+            return { ...t, artist: album.artist, albumId: album.id };
+        });
+        this.currentIndex = trackIndex;
+        this.loadTrack(this.currentPlaylist[this.currentIndex]);
+        this.play();
+    }
+
+    updateLibraryHighlight() {
+        if (this.libraryPanel.classList.contains('open')) this.renderLibrary();
+    }
+
+    getState() {
+        return {
+            albumId: this.currentAlbum?.id,
+            trackIndex: this.currentIndex,
+            currentTime: this.audio.currentTime,
+            isPlaying: this.isPlaying,
+            volume: this.audio.volume,
+            playlist: this.currentPlaylist,
+            timestamp: Date.now()
+        };
+    }
+
+    saveState() {
+        localStorage.setItem('jar_playerState', JSON.stringify(this.getState()));
+    }
+
+    close() {
+        this.saveState();
+        this.channel.postMessage({ type: 'popout-closed', data: this.getState() });
+        window.close();
+    }
+}
+
+new CassetteDeck();
+</script>
 </body>
 </html>

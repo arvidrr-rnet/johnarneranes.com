@@ -93,91 +93,88 @@ class AudioPlayer {
     
     createPlayerUI() {
         if (document.querySelector('.audio-player')) return;
-        
+
         const playerHTML = `
             <div class="audio-player" id="audio-player" role="region" aria-label="Lydspiller">
                 <div class="audio-player__container">
-                    <!-- Musikkbibliotek-knapp - pulserer for å tiltrekke oppmerksomhet -->
-                    <button class="audio-player__btn audio-player__library-btn audio-player__library-btn--highlight" id="library-btn" aria-label="Åpne musikkbibliotek" title="Velg album (M)">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                        </svg>
-                        <span class="audio-player__library-label">Musikk</span>
+
+                    <!-- Kassetter-knapp (bibliotek) -->
+                    <button class="audio-player__btn audio-player__library-btn audio-player__library-btn--highlight" id="library-btn" aria-label="Åpne musikkbibliotek" title="Kassetter (M)">
+                        <span class="audio-player__cassette-icon">⊞</span>
+                        <span class="audio-player__library-label">Kassetter</span>
                     </button>
-                    
-                    <!-- Kontroller -->
+
+                    <!-- Mini kassettvindu med spoler -->
+                    <div class="audio-player__tape-window">
+                        <div class="audio-player__reel audio-player__reel--left" id="mini-reel-left">
+                            <div class="audio-player__reel-hub"></div>
+                        </div>
+                        <div class="audio-player__tape-strip"></div>
+                        <div class="audio-player__reel audio-player__reel--right" id="mini-reel-right">
+                            <div class="audio-player__reel-hub"></div>
+                        </div>
+                    </div>
+
+                    <!-- LCD Info Display -->
+                    <div class="audio-player__lcd">
+                        <div class="audio-player__lcd-inner">
+                            <div class="audio-player__title" id="track-title">SETT INN KASSETT</div>
+                            <div class="audio-player__artist" id="track-artist">Trykk ⊞ Kassetter</div>
+                        </div>
+                        <div class="audio-player__lcd-scanline"></div>
+                    </div>
+
+                    <!-- Transport-kontroller (kassettspiller-knapper) -->
                     <div class="audio-player__controls">
-                        <button class="audio-player__btn" id="prev-btn" aria-label="Forrige spor">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                            </svg>
+                        <button class="audio-player__transport" id="prev-btn" aria-label="Forrige spor" title="Forrige (◄◄)">◄◄</button>
+                        <button class="audio-player__transport audio-player__transport--play" id="play-btn" aria-label="Spill av" title="Spill / Pause">
+                            <span class="play-icon">►</span>
+                            <span class="pause-icon hidden">⏸</span>
                         </button>
-                        <button class="audio-player__btn audio-player__btn--play" id="play-btn" aria-label="Spill av">
-                            <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            <svg class="pause-icon hidden" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                            </svg>
-                        </button>
-                        <button class="audio-player__btn" id="next-btn" aria-label="Neste spor">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-                            </svg>
-                        </button>
+                        <button class="audio-player__transport audio-player__transport--stop" id="stop-btn" aria-label="Stopp" title="Stopp (■)">■</button>
+                        <button class="audio-player__transport" id="next-btn" aria-label="Neste spor" title="Neste (►►)">►►</button>
                     </div>
-                    
-                    <!-- Info -->
-                    <div class="audio-player__info">
-                        <div class="audio-player__title" id="track-title">Klikk på "Musikk" for å lytte</div>
-                        <div class="audio-player__artist" id="track-artist">Eksperimentell gitar og improvisasjon</div>
-                    </div>
-                    
-                    <!-- Progress -->
+
+                    <!-- Tape counter & progress -->
                     <div class="audio-player__progress">
-                        <span class="audio-player__time" id="current-time">0:00</span>
+                        <span class="audio-player__counter" id="current-time">000</span>
                         <div class="audio-player__progress-bar" id="progress-bar" role="slider" aria-label="Sporlengde">
                             <div class="audio-player__progress-fill" id="progress-fill"></div>
                         </div>
-                        <span class="audio-player__time" id="duration">0:00</span>
+                        <span class="audio-player__counter" id="duration">000</span>
                     </div>
-                    
+
                     <!-- Volume -->
                     <div class="audio-player__volume">
-                        <button class="audio-player__btn" id="volume-btn" aria-label="Volum">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-                            </svg>
-                        </button>
-                        <input type="range" class="audio-player__volume-slider" id="volume-slider" 
+                        <span class="audio-player__vol-label">VOL</span>
+                        <input type="range" class="audio-player__volume-slider" id="volume-slider"
                                min="0" max="1" step="0.01" value="${this.volume}" aria-label="Volumkontroll">
                     </div>
-                    
+
+                    <!-- REC LED -->
+                    <div class="audio-player__rec-led" id="rec-led">● REC</div>
+
                     <!-- AirPlay (kun Safari) -->
                     <button class="audio-player__btn audio-player__btn--airplay" id="airplay-btn" aria-label="AirPlay" title="Spill av via AirPlay" style="display:none">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M6 22h12l-6-6-6 6zM21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v-2H3V5h18v12h-4v2h4c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
                         </svg>
                     </button>
-                    
+
                     <!-- Pop-out -->
-                    <button class="audio-player__btn audio-player__btn--popout" id="popout-btn" aria-label="Pop ut spiller" title="Pop ut i eget vindu">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-                        </svg>
-                    </button>
+                    <button class="audio-player__btn audio-player__btn--popout" id="popout-btn" aria-label="Pop ut spiller" title="Pop ut i eget vindu">⤢</button>
                 </div>
-                
+
                 <!-- Musikkbibliotek panel -->
                 <div class="audio-library" id="audio-library">
                     <div class="audio-library__header">
-                        <h3>Musikkbibliotek</h3>
+                        <h3>Kassettsamling</h3>
                         <button class="audio-library__close" id="library-close" aria-label="Lukk">✕</button>
                     </div>
                     <div class="audio-library__content">
                         <div class="audio-library__albums" id="library-albums"></div>
                         <div class="audio-library__tracks hidden" id="library-tracks">
-                            <button class="audio-library__back" id="library-back">← Tilbake til album</button>
+                            <button class="audio-library__back" id="library-back">◄ Tilbake til kassetter</button>
                             <div class="audio-library__album-info" id="album-info"></div>
                             <div class="audio-library__tracklist" id="album-tracklist"></div>
                         </div>
@@ -185,7 +182,7 @@ class AudioPlayer {
                 </div>
             </div>
         `;
-        
+
         document.body.insertAdjacentHTML('beforeend', playerHTML);
         this.cacheElements();
         // renderLibrary() kalles fra init() etter at JSON er lastet
@@ -196,6 +193,7 @@ class AudioPlayer {
         this.playBtn = document.getElementById('play-btn');
         this.prevBtn = document.getElementById('prev-btn');
         this.nextBtn = document.getElementById('next-btn');
+        this.stopBtn = document.getElementById('stop-btn');
         this.progressBar = document.getElementById('progress-bar');
         this.progressFill = document.getElementById('progress-fill');
         this.currentTimeEl = document.getElementById('current-time');
@@ -212,15 +210,21 @@ class AudioPlayer {
         this.libraryBack = document.getElementById('library-back');
         this.albumInfo = document.getElementById('album-info');
         this.albumTracklist = document.getElementById('album-tracklist');
+        this.miniReelLeft = document.getElementById('mini-reel-left');
+        this.miniReelRight = document.getElementById('mini-reel-right');
+        this.recLed = document.getElementById('rec-led');
     }
     
     bindEvents() {
         // Play/Pause
         this.playBtn.addEventListener('click', () => this.togglePlay());
         
-        // Previous/Next
+        // Previous/Next/Stop
         this.prevBtn.addEventListener('click', () => this.previousTrack());
         this.nextBtn.addEventListener('click', () => this.nextTrack());
+        if (this.stopBtn) {
+            this.stopBtn.addEventListener('click', () => this.stopPlayback());
+        }
         
         // Progress bar
         this.progressBar.addEventListener('click', (e) => this.seek(e));
@@ -312,7 +316,7 @@ class AudioPlayer {
             <div>
                 <h4>${album.title}</h4>
                 <p>${album.artist} • ${album.year}</p>
-                <button class="btn btn--small btn--gold" id="play-album-btn">▶ Spill alle</button>
+                <button class="btn btn--small btn--gold" id="play-album-btn">► Spill kassett</button>
             </div>
         `;
         
@@ -376,12 +380,6 @@ class AudioPlayer {
      * Samler ALLE spor fra alle album, shuffler, og spiller.
      */
     playNow() {
-        if (this.currentTrack) {
-            this.play();
-            this.showPlayer();
-            return;
-        }
-
         if (!this.libraryLoaded || MUSIC_LIBRARY.albums.length === 0) {
             this.toggleLibrary();
             return;
@@ -474,13 +472,26 @@ class AudioPlayer {
         this.playBtn.querySelector('.pause-icon').classList.remove('hidden');
         this.playBtn.setAttribute('aria-label', 'Pause');
         this.showPlayer();
+        // Spinn mini-spoler
+        if (this.miniReelLeft) this.miniReelLeft.classList.add('audio-player__reel--spinning');
+        if (this.miniReelRight) this.miniReelRight.classList.add('audio-player__reel--spinning');
+        // REC LED blinker
+        if (this.recLed) this.recLed.classList.add('audio-player__rec-led--active');
+        // Legg til playing-klasse på player for styling
+        if (this.playerEl) this.playerEl.classList.add('audio-player--playing');
     }
-    
+
     onPause() {
         this.isPlaying = false;
         this.playBtn.querySelector('.play-icon').classList.remove('hidden');
         this.playBtn.querySelector('.pause-icon').classList.add('hidden');
         this.playBtn.setAttribute('aria-label', 'Spill av');
+        // Stopp mini-spoler
+        if (this.miniReelLeft) this.miniReelLeft.classList.remove('audio-player__reel--spinning');
+        if (this.miniReelRight) this.miniReelRight.classList.remove('audio-player__reel--spinning');
+        // REC LED av
+        if (this.recLed) this.recLed.classList.remove('audio-player__rec-led--active');
+        if (this.playerEl) this.playerEl.classList.remove('audio-player--playing');
     }
     
     previousTrack() {
@@ -511,6 +522,13 @@ class AudioPlayer {
             this.onPause();
             this.currentIndex = 0;
         }
+    }
+
+    stopPlayback() {
+        this.pause();
+        this.audio.currentTime = 0;
+        if (this.progressFill) this.progressFill.style.width = '0%';
+        if (this.currentTimeEl) this.currentTimeEl.textContent = '0:00';
     }
     
     seek(e) {

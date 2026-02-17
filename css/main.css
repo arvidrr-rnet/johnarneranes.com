@@ -481,19 +481,41 @@ a:hover {
 }
 
 /* ============================================
-   AUDIO PLAYER
+   AUDIO PLAYER — KASSETTSPILLER-DESIGN
    ============================================ */
+
+/* ── Kassettspiller-fargevariabler ── */
 .audio-player {
+    --deck-bg: #1e1e1e;
+    --deck-border: #3a3a3a;
+    --deck-chrome: #888;
+    --lcd-bg: #0a1a0a;
+    --lcd-text: #33ff66;
+    --lcd-dim: #1a4a2a;
+    --reel-bg: #222;
+    --reel-hub: #444;
+    --tape-window-bg: #0d0800;
+    --btn-face: #3a3a3a;
+    --btn-edge: #555;
+    --btn-active: #2a2a2a;
+    --rec-color: #ff3344;
+    --rec-dim: #661122;
+
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--color-bg-elevated);
-    border-top: 1px solid var(--color-border);
-    padding: var(--space-md) var(--space-lg);
+    background: var(--deck-bg);
+    border-top: 2px solid var(--deck-border);
+    box-shadow:
+        0 -2px 0 rgba(255,255,255,0.03),
+        0 -4px 16px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    padding: 10px 16px;
     z-index: 1000;
     transform: translateY(100%);
     transition: transform var(--transition-base);
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
 }
 
 .audio-player--visible {
@@ -505,77 +527,264 @@ a:hover {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
+    gap: 12px;
 }
 
-.audio-player__controls {
+/* ── Kassetter-knapp (bibliotek) ── */
+.audio-player__library-btn {
+    order: -1;
     display: flex;
     align-items: center;
-    gap: var(--space-md);
-}
-
-.audio-player__btn {
-    background: none;
-    border: none;
-    color: var(--color-text-primary);
-    font-size: 1.25rem;
+    gap: 6px;
+    padding: 6px 12px !important;
+    background: var(--btn-face);
+    border: 1px solid var(--btn-edge) !important;
+    border-radius: 2px !important;
+    color: var(--lcd-text);
     cursor: pointer;
-    padding: var(--space-sm);
-    border-radius: 50%;
-    transition: all var(--transition-fast);
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow:
+        1px 1px 0 rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 120ms ease;
 }
 
-.audio-player__btn:hover {
-    color: var(--color-accent-primary);
-    background: rgba(201, 169, 98, 0.1);
+.audio-player__library-btn:hover {
+    background: #484848;
+    color: #44ff88;
 }
 
-.audio-player__btn--play {
-    width: 48px;
-    height: 48px;
-    background: var(--color-accent-primary);
-    color: var(--color-bg-primary);
+.audio-player__library-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.audio-player__cassette-icon {
     font-size: 1rem;
 }
 
-.audio-player__btn--play:hover {
-    background: var(--color-accent-highlight);
-    color: var(--color-bg-primary);
+.audio-player__library-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: inherit;
 }
 
-.audio-player__info {
+.audio-player__library-btn.active {
+    background: var(--btn-active);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+    color: #44ff88;
+}
+
+.audio-player__library-btn--highlight {
+    animation: cassette-pulse 2s ease-in-out infinite;
+}
+
+.audio-player__library-btn--highlight:hover {
+    animation: none;
+}
+
+@keyframes cassette-pulse {
+    0%, 100% { box-shadow: 1px 1px 0 rgba(0,0,0,0.4), 0 0 4px rgba(51,255,102,0.2); }
+    50%      { box-shadow: 1px 1px 0 rgba(0,0,0,0.4), 0 0 12px rgba(51,255,102,0.5); }
+}
+
+/* ── Mini kassettvindu med spoler ── */
+.audio-player__tape-window {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--tape-window-bg);
+    border: 1px solid #2a1a00;
+    border-radius: 3px;
+    padding: 4px 6px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
+    min-width: 70px;
+    justify-content: center;
+}
+
+.audio-player__reel {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--reel-bg);
+    border: 1.5px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s;
+}
+
+.audio-player__reel-hub {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--reel-hub);
+    border: 1px solid #666;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.5);
+}
+
+.audio-player__reel--spinning {
+    animation: spin-mini-reel 1.2s linear infinite;
+}
+
+@keyframes spin-mini-reel {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.audio-player__tape-strip {
+    width: 12px;
+    height: 2px;
+    background: #3a2200;
+    border-radius: 1px;
+}
+
+/* ── LCD Display ── */
+.audio-player__lcd {
     flex: 1;
     min-width: 0;
+    background: var(--lcd-bg);
+    border: 1px solid #1a3a1a;
+    border-radius: 2px;
+    padding: 6px 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        inset 0 1px 4px rgba(0,0,0,0.5),
+        0 0 4px rgba(51,255,102,0.05);
+}
+
+.audio-player__lcd-inner {
+    position: relative;
+    z-index: 1;
+}
+
+.audio-player__lcd-scanline {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
 }
 
 .audio-player__title {
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--color-text-primary);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--lcd-text);
+    text-shadow: 0 0 4px rgba(51,255,102,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.audio-player__artist {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--lcd-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.audio-player__artist {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-}
-
-.audio-player__progress {
-    flex: 2;
+/* ── Transport-kontroller (mekaniske kassett-knapper) ── */
+.audio-player__controls {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 4px;
+}
+
+.audio-player__transport {
+    background: var(--btn-face);
+    border: 1px solid var(--btn-edge);
+    color: #ccc;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 2px;
+    letter-spacing: 0;
+    box-shadow:
+        1px 2px 0 rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 80ms ease;
+    line-height: 1;
+}
+
+.audio-player__transport:hover {
+    background: #484848;
+    color: #fff;
+}
+
+.audio-player__transport:active {
+    transform: translateY(2px);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.audio-player__transport--play {
+    background: var(--btn-face);
+    color: var(--lcd-text);
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-color: var(--lcd-text);
+    box-shadow:
+        1px 2px 0 rgba(0,0,0,0.4),
+        0 0 4px rgba(51,255,102,0.15);
+}
+
+.audio-player__transport--play:hover {
+    background: #484848;
+    box-shadow:
+        1px 2px 0 rgba(0,0,0,0.4),
+        0 0 8px rgba(51,255,102,0.3);
+}
+
+.audio-player__transport--stop {
+    color: var(--rec-color);
+}
+
+/* ── Tape counter & progress ── */
+.audio-player__progress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1.5;
+}
+
+.audio-player__counter {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--lcd-text);
+    text-shadow: 0 0 3px rgba(51,255,102,0.3);
+    min-width: 36px;
+    text-align: center;
+    background: var(--lcd-bg);
+    border: 1px solid #1a3a1a;
+    border-radius: 1px;
+    padding: 2px 4px;
 }
 
 .audio-player__progress-bar {
     flex: 1;
-    height: 4px;
-    background: var(--color-border);
-    border-radius: 2px;
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 0;
     cursor: pointer;
     position: relative;
+    border: 1px solid #333;
 }
 
 .audio-player__progress-fill {
@@ -583,34 +792,37 @@ a:hover {
     left: 0;
     top: 0;
     height: 100%;
-    background: var(--color-accent-primary);
-    border-radius: 2px;
+    background: var(--lcd-text);
+    border-radius: 0;
     width: 0%;
     transition: width 100ms linear;
+    box-shadow: 0 0 4px rgba(51,255,102,0.3);
 }
 
 .audio-player__progress-bar:hover .audio-player__progress-fill {
-    background: var(--color-accent-highlight);
+    box-shadow: 0 0 8px rgba(51,255,102,0.5);
 }
 
-.audio-player__time {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    min-width: 45px;
-}
-
+/* ── Volume ── */
 .audio-player__volume {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 4px;
+}
+
+.audio-player__vol-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .audio-player__volume-slider {
-    width: 80px;
-    height: 4px;
-    background: var(--color-border);
-    border-radius: 2px;
+    width: 60px;
+    height: 3px;
+    background: #333;
+    border-radius: 0;
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
@@ -618,53 +830,66 @@ a:hover {
 
 .audio-player__volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 12px;
-    height: 12px;
-    background: var(--color-accent-primary);
-    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--deck-chrome);
+    border-radius: 1px;
     cursor: pointer;
+    border: 1px solid #aaa;
 }
 
-/* Library Button */
-.audio-player__library-btn {
-    order: -1;
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-sm) var(--space-md) !important;
-    border-radius: var(--radius-md) !important;
-    background: rgba(201, 169, 98, 0.15);
-    border: 1px solid var(--color-accent-primary) !important;
+/* ── REC LED ── */
+.audio-player__rec-led {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--rec-dim);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    transition: color 0.3s;
 }
 
-.audio-player__library-btn--highlight {
-    animation: pulse-glow 2s ease-in-out infinite;
+.audio-player__rec-led--active {
+    color: var(--rec-color);
+    text-shadow: 0 0 6px rgba(255,51,68,0.6);
+    animation: blink-rec 1s step-end infinite;
 }
 
-.audio-player__library-btn--highlight:hover {
-    animation: none;
-    background: rgba(201, 169, 98, 0.25);
+@keyframes blink-rec {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.3; }
 }
 
-.audio-player__library-label {
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--color-accent-primary);
+/* ── Generic button (airplay, popout) ── */
+.audio-player__btn {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px;
+    transition: all var(--transition-fast);
 }
 
-.audio-player__library-btn.active {
-    animation: none;
-    color: var(--color-accent-primary);
-    background: rgba(201, 169, 98, 0.25);
+.audio-player__btn:hover {
+    color: var(--lcd-text);
+    text-shadow: 0 0 4px rgba(51,255,102,0.3);
 }
 
-@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 5px rgba(201, 169, 98, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(201, 169, 98, 0.6), 0 0 30px rgba(201, 169, 98, 0.3);
-    }
+.audio-player__btn--popout {
+    font-size: 0.9rem;
+    opacity: 0.5;
+}
+
+.audio-player__btn--popout:hover {
+    opacity: 1;
+}
+
+.audio-player__btn--airplay {
+    opacity: 0.5;
+}
+
+.audio-player__btn--airplay:hover {
+    opacity: 1;
 }
 
 /* Hero play button */
@@ -686,19 +911,20 @@ a:hover {
     bottom: 100%;
     left: 0;
     right: 0;
-    background: var(--color-bg-elevated);
-    border-top: 1px solid var(--color-border);
+    background: #1a1a1a;
+    border-top: 1px solid #3a3a3a;
     max-height: 0;
     overflow: hidden;
     transition: max-height var(--transition-base), opacity var(--transition-fast);
     opacity: 0;
+    font-family: 'Share Tech Mono', monospace;
 }
 
 .audio-library--open {
     max-height: 60vh;
     opacity: 1;
     overflow-y: auto;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
 }
 
 .audio-library__header {
@@ -706,18 +932,21 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-md) var(--space-lg);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid #333;
     position: sticky;
     top: 0;
-    background: var(--color-bg-elevated);
+    background: #1a1a1a;
     z-index: 10;
 }
 
 .audio-library__header h3 {
-    font-family: var(--font-display);
+    font-family: 'Share Tech Mono', monospace;
     font-size: var(--text-lg);
-    color: var(--color-accent-primary);
+    color: #33ff66;
+    text-shadow: 0 0 4px rgba(51,255,102,0.3);
     margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .audio-library__close {
@@ -928,10 +1157,13 @@ a:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--color-accent-primary);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    color: #33ff66;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 6px rgba(51,255,102,0.4);
+    text-transform: uppercase;
     z-index: 2;
     pointer-events: none;
 }
@@ -1669,35 +1901,55 @@ a:hover {
         margin: 0 auto var(--space-lg);
     }
     
-    /* Audio Player mobile optimized */
+    /* Audio Player mobile — kassettspiller */
     .audio-player {
-        padding: var(--space-sm) var(--space-md);
+        padding: 6px 8px;
     }
-    
+
     .audio-player__container {
         flex-wrap: wrap;
-        gap: var(--space-sm);
+        gap: 6px;
     }
-    
+
+    .audio-player__tape-window {
+        display: none;
+    }
+
+    .audio-player__lcd {
+        order: 1;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .audio-player__controls {
+        order: 2;
+    }
+
     .audio-player__progress {
         order: 3;
         flex-basis: 100%;
-        margin-top: var(--space-sm);
+        margin-top: 4px;
     }
-    
+
     .audio-player__volume {
         display: none;
     }
-    
-    .audio-player__info {
-        flex: 1;
-        min-width: 0;
-        max-width: calc(100% - 180px);
+
+    .audio-player__rec-led {
+        display: none;
     }
-    
-    .audio-player__btn--play {
-        width: 44px;
-        height: 44px;
+
+    .audio-player__btn--popout,
+    .audio-player__btn--airplay {
+        display: none;
+    }
+
+    .audio-player__library-label {
+        display: none;
+    }
+
+    .audio-player__library-btn {
+        padding: 6px 8px !important;
     }
     
     /* Music Library responsive */
@@ -1805,7 +2057,7 @@ a:hover {
     }
     
     .audio-player__library-btn {
-        border-radius: 50% !important;
+        border-radius: 2px !important;
     }
     
     .audio-player__btn {
@@ -1816,7 +2068,7 @@ a:hover {
         font-size: var(--text-xs);
     }
     
-    .audio-player__info {
+    .audio-player__lcd {
         max-width: calc(100% - 150px);
     }
     
