@@ -62,9 +62,9 @@
     // --- Hent lagret tema ---
     function getSavedTheme() {
         try {
-            return localStorage.getItem(STORAGE_KEY) || 'default';
+            return localStorage.getItem(STORAGE_KEY) || 'vhs';
         } catch (e) {
-            return 'default';
+            return 'vhs';
         }
     }
 
